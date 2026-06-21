@@ -1,2257 +1,343 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RED FLAG Famille</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #f5ede3 0%, #ede8df 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: #2c2c2a;
-        }
-        
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: #fafaf8;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #8b7355 0%, #6d5a47 100%);
-            color: #fff;
-            padding: 40px 30px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        
-        .header p {
-            font-size: 14px;
-            opacity: 0.9;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        
-        .content { padding: 40px 30px; }
-        
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #e0dcd3;
-            flex-wrap: wrap;
-        }
-        
-        .tab-button {
-            background: none;
-            border: none;
-            padding: 12px 20px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            color: #888780;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s ease;
-        }
-        
-        .tab-button.active {
-            color: #8b7355;
-            border-bottom-color: #ba7517;
-        }
-        
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        
-        .question-group { margin-bottom: 24px; }
-        
-        .question-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: #2c2c2a;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .question-group .options {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        
-        .option-btn {
-            padding: 10px 16px;
-            border: 1.5px solid #d3d1c7;
-            background: #fff;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            color: #5f5e5a;
-            transition: all 0.2s ease;
-        }
-        
-        .option-btn:hover {
-            border-color: #ba7517;
-            background: #faeeda;
-        }
-        
-        .option-btn.selected {
-            background: #ba7517;
-            color: #fff;
-            border-color: #ba7517;
-        }
-        
-        .progress-bar {
-            height: 6px;
-            background: #e0dcd3;
-            border-radius: 3px;
-            margin-bottom: 30px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #639922 0%, #ba7517 50%, #993c1d 100%);
-            transition: width 0.3s ease;
-            border-radius: 3px;
-        }
-        
-        .score-card {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-        
-        .score-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-        
-        .score-number {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 4px;
-        }
-        
-        .score-bar {
-            height: 8px;
-            background: #e0dcd3;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        
-        .score-bar-fill {
-            height: 100%;
-            background: var(--fill);
-            border-radius: 4px;
-        }
-        
-        .archetype-box {
-            background: linear-gradient(135deg, #faeeda 0%, #f5ede3 100%);
-            border: 2px solid #ba7517;
-            border-radius: 12px;
-            padding: 24px;
-            margin: 24px 0;
-            text-align: center;
-        }
-        
-        .archetype-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #8b7355;
-            margin-bottom: 12px;
-        }
-        
-        .archetype-description {
-            font-size: 14px;
-            line-height: 1.7;
-            color: #5f5e5a;
-        }
-        
-        .synthesis-box {
-            background: #f5ede3;
-            border-left: 4px solid #8b7355;
-            border-radius: 8px;
-            padding: 16px;
-            margin: 24px 0;
-            font-size: 14px;
-            line-height: 1.7;
-            color: #5f5e5a;
-        }
-        
-        .profile-badge {
-            background: #f5ede3;
-            border: 1px solid #e0dcd3;
-            border-radius: 10px;
-            padding: 12px 16px;
-            margin-bottom: 12px;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-        
-        .profile-badge strong {
-            display: block;
-            font-size: 14px;
-            margin-bottom: 4px;
-            color: #8b7355;
-        }
-        
-        .scenario {
-            background: #f5ede3;
-            border-left: 4px solid;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-        
-        .scenario.immediate { border-left-color: #e24b4a; }
-        .scenario.medium { border-left-color: #ba7517; }
-        .scenario.long { border-left-color: #639922; }
-        
-        .scenario-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        
-        .scenario-text {
-            font-size: 13px;
-            line-height: 1.6;
-            color: #5f5e5a;
-        }
-        
-        .cta-box {
-            background: linear-gradient(135deg, #8b7355 0%, #6d5a47 100%);
-            border-radius: 12px;
-            padding: 24px;
-            margin: 30px 0;
-            text-align: center;
-            color: #fff;
-        }
-        
-        .cta-box h3 {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-        
-        .cta-box p {
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 16px;
-            opacity: 0.95;
-        }
-        
-        .cta-button {
-            background: #faeeda;
-            color: #8b7355;
-            padding: 12px 28px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.2s ease;
-        }
-        
-        .cta-button:hover {
-            background: #fff;
-            transform: translateY(-1px);
-        }
-        
-        .library-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .archetype-card {
-            background: #fafaf8;
-            border: 1.5px solid #e0dcd3;
-            border-radius: 12px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .archetype-card:hover {
-            border-color: #ba7517;
-            box-shadow: 0 4px 16px rgba(186, 117, 23, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        .archetype-card h3 {
-            font-size: 16px;
-            font-weight: 600;
-            color: #8b7355;
-            margin-bottom: 16px;
-        }
-        
-        .article-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .article-item {
-            padding: 12px;
-            background: #f5ede3;
-            border-radius: 8px;
-            font-size: 13px;
-            color: #5f5e5a;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .article-item:hover {
-            background: #faeeda;
-            color: #8b7355;
-        }
-        
-        .article-view {
-            max-width: 800px;
-        }
-        
-        .article-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-        
-        .article-back {
-            background: #e0dcd3;
-            color: #2c2c2a;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-        
-        .article-back:hover {
-            background: #d3d1c7;
-        }
-        
-        .article-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #8b7355;
-            margin-bottom: 16px;
-        }
-        
-        .article-intro {
-            font-size: 14px;
-            line-height: 1.7;
-            color: #5f5e5a;
-            margin-bottom: 24px;
-        }
-        
-        .article-placeholder {
-            background: #f5ede3;
-            border-left: 4px solid #ba7517;
-            border-radius: 8px;
-            padding: 20px;
-            font-size: 14px;
-            color: #888780;
-            text-align: center;
-            margin-bottom: 24px;
-        }
-        
-        .button-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 30px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.2s ease;
-        }
-        
-        .btn-primary {
-            background: #8b7355;
-            color: #fff;
-        }
-        
-        .btn-primary:hover {
-            background: #6d5a47;
-            transform: translateY(-1px);
-        }
-        
-        .btn-secondary {
-            background: #e0dcd3;
-            color: #2c2c2a;
-        }
-        
-        .btn-secondary:hover {
-            background: #d3d1c7;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #888780;
-        }
-        
-        @media (max-width: 600px) {
-            .content { padding: 20px; }
-            .header { padding: 30px 20px; }
-            .header h1 { font-size: 22px; }
-            .tabs { flex-wrap: wrap; }
-            .button-group { flex-direction: column; }
-            .btn { width: 100%; }
-            .library-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RED FLAG Analyse relationnelle</title>
+<style>
+*{box-sizing:border-box}
+html,body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+body{margin:0;font-family:Arial,sans-serif;background:#1a0000;color:#f8efe8}
+.page{min-height:100vh;padding:32px 18px;background:radial-gradient(circle at top,#ff1a1a 0%,#b30000 45%,#2a0000 100%)}
+.container{max-width:1080px;margin:auto}
+.hero{padding:32px;border-radius:28px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);box-shadow:0 20px 60px rgba(0,0,0,.38);margin-bottom:24px}
+h1{margin:0 0 12px;font-size:54px;letter-spacing:-1px;color:#fff2ea}
+.subtitle{font-size:18px;line-height:1.55;color:#ead7d0;max-width:900px}
+.warning{margin-top:18px;padding:16px 18px;border-radius:16px;background:rgba(255,70,70,.18);border:1px solid rgba(255,170,170,.42);color:#ffe1df;font-size:15px;line-height:1.45;font-weight:bold}
+.brandTop{margin-top:18px;padding:16px;border-radius:18px;background:linear-gradient(135deg,#ff4d4d,#ff0000);color:#fff;font-weight:900;text-align:center;font-size:20px}.brandTop a{color:#fff;text-decoration:none}
+.priceBox{margin-top:16px;padding:12px 14px;border-radius:18px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#fff2ea;font-weight:800;font-size:15px;text-align:center}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:850px){.grid{grid-template-columns:1fr}h1{font-size:40px}.page{padding:20px 12px}.hero{padding:22px}.level{font-size:24px}}
+.card{padding:22px;border-radius:24px;background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.13);box-shadow:0 12px 35px rgba(0,0,0,.22)}
+label{display:block;margin-bottom:8px;font-weight:bold;color:#fff7f1}
+textarea,input{width:100%;border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.28);color:#fff;border-radius:16px;padding:14px;font-size:15px;outline:none;resize:vertical}
+textarea{user-select:text}
+textarea:focus,input:focus{border-color:#ff3b3b;box-shadow:0 0 0 3px rgba(255,0,0,.22)}
+.checks{display:grid;gap:10px;margin-top:10px;max-height:760px;overflow:auto;padding-right:4px}
+.check{display:flex;gap:10px;align-items:flex-start;padding:11px;border-radius:14px;background:rgba(255,255,255,.065);cursor:pointer;font-size:14px;line-height:1.35;border:1px solid rgba(255,255,255,.08)}
+.check:hover{background:rgba(255,255,255,.11)}.check input{width:auto;margin-top:2px;transform:scale(1.15)}
+button{width:100%;margin-top:18px;border:none;border-radius:18px;padding:17px 18px;font-size:18px;font-weight:900;color:#210910;background:linear-gradient(135deg,#ff5c5c,#ff0000);cursor:pointer;box-shadow:0 14px 30px rgba(255,0,0,.42)}button:hover{transform:translateY(-1px)}.resetBtn{margin-top:10px;background:linear-gradient(135deg,#4a4a4a,#151515);color:#fff;box-shadow:0 10px 24px rgba(0,0,0,.28)}.resetResultTop{margin:22px 0 4px}.resetResultBottom{margin-top:18px}
+.result{margin-top:22px;padding:24px;border-radius:24px;background:#fff8f2;color:#230d13;display:none;border:4px solid #ff0000}.scoreLine{display:flex;align-items:center;gap:16px;flex-wrap:wrap}.score{width:122px;height:122px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:31px;font-weight:900;color:white;background:#ff0000;box-shadow:0 12px 28px rgba(255,0,0,.35)}
+.level{font-size:30px;font-weight:900;margin-bottom:6px;text-transform:uppercase}.result h3{margin:22px 0 10px}.result p{line-height:1.55}.list{padding-left:18px;line-height:1.55;font-weight:700}.badge{display:inline-block;padding:7px 11px;border-radius:999px;background:#ffd6d6;color:#9b0000;font-weight:900;font-size:13px;margin:4px 6px 4px 0}
+.riskGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}@media(max-width:850px){.riskGrid{grid-template-columns:1fr}}
+.riskCard{padding:13px;border-radius:15px;background:#ffe6e6;border:1px solid #ffb4b4;color:#780000;font-weight:900}.riskCard span{display:block;font-size:24px;margin-top:5px;color:#b00000}.verdictBox{padding:18px;border-radius:18px;background:#230d13;color:#fff;font-weight:900;line-height:1.5;border:3px solid #ff0000}.footerNote{margin-top:18px;font-size:14px;line-height:1.45;color:#5c4048;font-weight:bold}.siteBox{margin-top:22px;padding:22px;border-radius:20px;background:#ff0000;color:white;text-align:center;font-weight:900;font-size:22px;line-height:1.35;box-shadow:0 12px 30px rgba(255,0,0,.35)}.siteBox a{color:#fff;text-decoration:none}.mini{font-size:14px;opacity:.9;margin-top:8px}
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🚩 Red Flag Famille</h1>
-            <p>Détecte les dynamiques toxiques cachées : manipulation parentale, parentification, favoritisme, culpabilité familiale.</p>
-        </div>
-        
-        <div class="content">
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab('assessment')">Évaluation</button>
-                <button class="tab-button" onclick="switchTab('results')">Résultats</button>
-                <button class="tab-button" onclick="switchTab('library')">Bibliothèque</button>
-            </div>
-            
-            <div id="assessment" class="tab-content active">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-                <div id="questionsContainer"></div>
-                <div class="button-group" id="assessmentActions">
-                    <button class="btn btn-primary" onclick="calculateResults()" id="submitBtn" style="display: none;">Voir mes résultats</button>
-                    <button class="btn btn-secondary" onclick="clearAssessment()" id="clearBtn">Effacer mes réponses</button>
-                </div>
-            </div>
-            
-            <div id="results" class="tab-content">
-                <div id="resultsContainer" class="empty-state">
-                    <p>Complète l'évaluation pour voir tes résultats.</p>
-                </div>
-                <div class="button-group" style="margin-top: 20px;">
-                    <button class="btn btn-secondary" onclick="switchTab('assessment')">Revenir à l'évaluation</button>
-                    <button class="btn btn-secondary" onclick="clearAssessment()">Effacer mes réponses</button>
-                    <button class="btn btn-secondary" onclick="switchTab('library')">Explorer la Bibliothèque</button>
-                </div>
-            </div>
-            
-            <div id="library" class="tab-content">
-                <div id="libraryView"></div>
-                <div id="articleView" style="display: none;" class="article-view"></div>
-            </div>
-        </div>
-    </div>
-    
-    <script>
-        const questions = [
-            {category: 'Manipulation parentale', id: 'manipulation', questions: [{text: "Un parent utilise mes secrets ou vulnérabilités contre moi lors de conflits", weight: 3}, {text: "Un parent me dit que je suis 'la seule qui comprenne' ou 'la seule en qui il peut compter'", weight: 3}, {text: "Un parent me reproche de ressembler à l'autre parent ou utilise mes proches pour me contrôler", weight: 2}, {text: "Je me sens obligée de répondre très rapidement à ses appels, visites ou messages, sinon il s'énerve", weight: 2}, {text: "Un parent dit que je suis 'égoïste' ou 'ingrate' quand je mets des limites", weight: 2}]},
-            {category: 'Parentification et rôle inversé', id: 'parentification', questions: [{text: "J'ai été l'oreille émotionnelle d'un parent quand j'étais enfant ou adolescente", weight: 3}, {text: "J'ai appris à nier mes besoins pour calmer un parent ou le protéger", weight: 3}, {text: "Un parent me confie ses peines amoureuses ou professionnelles comme à une amie", weight: 2}, {text: "Je me sens responsable des émotions d'un parent encore aujourd'hui", weight: 2}, {text: "Je n'ose pas dire non à un parent sans me sentir immédiatement coupable", weight: 2}]},
-            {category: 'Favoritisme familial', id: 'favoritisme', questions: [{text: "Je me sens moins aimée que ma fratrie, ou c'est l'inverse et j'en culpabilise", weight: 3}, {text: "Un parent compare mon succès, mon apparence ou ma personnalité à celle de mes frères et sœurs", weight: 2}, {text: "Ma fratrie me tient responsable de ce qu'un parent a donné à l'autre", weight: 2}, {text: "J'ai une relation très proche avec un parent et distante avec l'autre", weight: 2}, {text: "Le préféré d'un parent change selon son humeur, ce qui me déstabilise", weight: 1}]},
-            {category: 'Culpabilité familiale', id: 'culpabilite', questions: [{text: "Je porte la souffrance d'un parent sans qu'il l'ait explicitement demandé", weight: 3}, {text: "Je me sens coupable de mon bien-être ou de mes succès face aux difficultés d'un parent", weight: 3}, {text: "Un parent utilise des phrases comme 'Après tout ce que j'ai fait pour toi' ou 'je me suis sacrifiée'", weight: 2}, {text: "Je rembourse émotionnellement une dette familiale que je n'ai pas créée", weight: 2}, {text: "La culpabilité m'empêche de prendre mes propres décisions", weight: 2}]},
-            {category: 'Fratrie et alliances toxiques', id: 'fratrie', questions: [{text: "Ma fratrie me blâme pour ma relation avec un parent ou me juge de ne pas assez faire pour lui", weight: 2}, {text: "J'ai dû jouer le rôle de parent auprès de mes frères et sœurs plus jeunes", weight: 2}, {text: "Ma fratrie rivalise avec moi pour l'attention ou l'affection d'un parent", weight: 2}, {text: "Je ne peux pas parler librement à ma fratrie de ce qui se passe vraiment en famille", weight: 1}, {text: "Un enfant est clairement préféré et cela crée une compétition entre nous", weight: 2}]}
-        ];
-
-        /*
-        RED FLAG FAMILLE — BIBLIOTHÈQUE ACTIVE
-        Règle simple, parce qu'apparemment même le code a besoin d'être recadré :
-        - Ne mettre ici QUE les articles réellement complets.
-        - Pour ajouter un article hebdomadaire :
-          1) Ajouter son titre + intro dans archetypes.
-          2) Ajouter son contenu complet dans articleContents avec la clé exacte : archetype_index.
-          Exemple : enfant_parent_1, enfant_parent_2, etc.
-        - Ne jamais remettre de cadenas, de faux article ou de "bientôt disponible" dans la bibliothèque visible.
-        */
-        const archetypes = {
-            'enfant_parent': {
-                name: 'L\'enfant parent',
-                articles: [
-                    {title: 'Pourquoi tu culpabilises autant', intro: 'Tu as grandi en pensant que tes besoins étaient une forme d\'égoïsme. Chaque fois que tu penses à toi, une petite voix te dit que tu devrais penser aux autres d\'abord. Cette culpabilité n\'a pas commencé avec toi. Elle a commencé quand on t\'a donné l\'impression que ton rôle était de prendre soin, pas d\'être prise soin.'}
-                ]
-            },
-            'enfant_sauveur': {
-                name: 'L\'enfant sauveur',
-                articles: [
-                    {title: 'Pourquoi tu anticipes tout', intro: 'Ton cerveau fonctionne en mode alerte permanente. Tu lis entre les lignes, tu devines les colères avant qu\'elles arrivent, tu arranges les choses avant qu\'elles explosent. Ce radar émotionnel t\'a probablement sauvée enfant. Aujourd\'hui, il te tue.'}
-                ]
-            },
-            'enfant_oublie': {
-                name: 'L\'enfant oublié',
-                articles: [
-                    {title: 'Pourquoi tu as du mal à recevoir', intro: 'Les compliments te mettent mal à l\'aise. L\'amour aussi. L\'attention, la générosité, l\'aide, tout ça semble destiné à quelqu\'un d\'autre. Pas à toi. Tu es habituée à te débrouiller seule. Recevoir, c\'est baisser ta garde. Et tu n\'as jamais appris à faire ça.'}
-                ]
-            },
-            'bouc_emissaire': {
-                name: 'Le bouc émissaire',
-                articles: [
-                    {title: 'Pourquoi tu te justifies sans arrêt', intro: 'Tu as appris à te défendre avant même qu\'on t\'accuse. Parce qu\'on t\'a tellement blâmée qu\'il te semble normal d\'être suspecte. Tu expliques, tu justifies, tu t\'excuses même quand tu n\'as rien fait. Parce que tu préfères te battre que de te sentir impuissante.'}
-                ]
-            },
-            'enfant_invisible': {
-                name: 'L\'enfant invisible',
-                articles: [
-                    {title: 'Pourquoi tu te débrouilles toujours seule', intro: 'Tu as appris très tôt qu\'il ne fallait compter que sur toi. Peut-être qu\'on était absent, peut-être qu\'on était trop occupé, peut-être qu\'on ne remarquait pas. Alors tu as appris à survivre seule. Et maintenant, même quand on te propose de l\'aide, tu ne sais pas comment l\'accepter.'}
-                ]
-            },
-            'enfant_prefere': {
-                name: 'L\'enfant préféré',
-                articles: [
-                    {title: 'Pourquoi tu culpabilises autant', intro: 'Être préférée a un prix. Tu sens la tension dans la fratrie. Tu vois le regard des autres enfants. Et tu te sens coupable d\'avoir reçu ce qu\'ils n\'ont pas. Cette culpabilité, tu la portes. Elle est devenue une partie de qui tu es.'}
-                ]
-            },
-            'enfant_mediateur': {
-                name: 'L\'enfant médiateur',
-                articles: [
-                    {title: 'Pourquoi tu veux toujours réparer les autres', intro: 'Tu as été habituée à calmer les tempêtes. À lire les silences, à arranger les conflits avant qu\'ils ne deviennent des catastrophes. C\'était ton rôle. Et maintenant, même à l\'âge adulte, tu fais ça automatiquement. Sans qu\'on te le demande.'}
-                ]
-            }
-        };
-
-        let answers = {};
-        let currentArchetype = null;
-        
-        const articleContents = {
-            'enfant_parent_0': `Tu ne culpabilises pas parce que tu es gentille. Tu ne culpabilises pas parce que tu as bon cœur. Tu culpabilises parce qu'on t'a appris très tôt que penser à toi était un problème.
-
-Peut-être que tu étais celle qui écoutait. Celle qui calmait. Celle qui comprenait. Celle qui ne faisait pas de vagues. Celle qui entendait les problèmes des adultes alors qu'elle n'avait même pas l'âge de les porter.
-
-Et sans t'en rendre compte, tu as grandi avec une idée étrange.
-
-Les autres d'abord. Toi après.
-
-Alors aujourd'hui, quand tu annules un rendez-vous parce que tu es fatiguée, tu culpabilises. Quand tu dis non, tu culpabilises. Quand tu dépenses de l'argent pour toi, tu culpabilises. Quand tu te reposes, tu culpabilises. Quand tu n'as pas envie de répondre au téléphone, tu culpabilises. Et parfois tu culpabilises même d'aller bien.
-
-Tu connais peut-être cette scène.
-
-Tu es enfin tranquille chez toi. Tu t'assois. Tu allumes une série. Et au lieu de profiter, ton cerveau cherche quelqu'un qui pourrait avoir besoin de toi. Ta mère. Ton père. Tes enfants. Ton compagnon. Une amie.
-
-Comme si être en paix était presque dangereux.
-
-Parce qu'au fond, tu as appris qu'il fallait être utile pour être aimée.
-
-Alors tu rends service. Tu aides. Tu rassures. Tu écoutes. Tu portes. Et les autres finissent par trouver ça normal. Parce que ce qui est offert tous les jours finit par devenir invisible.
-
-Le problème, c'est que personne ne voit ce que ça te coûte.
-
-On voit la femme solide. On ne voit pas celle qui s'endort épuisée. On voit celle qui gère. On ne voit pas celle qui rêve qu'on lui demande enfin : « Et toi, ça va ? »
-
-Alors tu continues. Tu fais bonne figure. Tu souris. Tu dis : « Ça va. »
-
-Alors que parfois tu as juste envie que quelqu'un prenne un peu le relais. Mais demander te met mal à l'aise. Parce que recevoir n'a jamais été naturel pour toi. Tu préfères donner. Parce que donner te donne une place. Parce que recevoir te rend vulnérable.
-
-Alors tu attires souvent les mêmes profils. Des gens perdus. Des gens blessés. Des gens qui ont besoin d'aide. Des gens qui prennent beaucoup.
-
-Pas parce que tu les cherches. Mais parce que tu sais faire ça. Tu sais réparer. Tu sais comprendre. Tu sais attendre. Tu sais pardonner.
-
-Et parfois, tu restes dans des relations qui te vident parce qu'une partie de toi croit encore que l'amour se mérite. Qu'il faut faire des efforts. Comprendre. Supporter. Sauver.
-
-Tu sais ce qui est injuste ?
-
-C'est que personne ne t'a demandé si tu voulais ce rôle. Tu l'as pris parce qu'il fallait bien que quelqu'un le fasse. Parce qu'enfant, tu n'avais pas le choix.
-
-Mais aujourd'hui, tu n'es plus cette enfant.
-
-Tu peux continuer à aimer sans porter tout le monde. Tu peux dire non sans être mauvaise. Tu peux être fatiguée sans être égoïste. Tu peux avoir besoin d'aide sans être faible. Tu peux laisser les autres gérer leurs émotions. Tu peux arrêter de sauver ceux qui ne veulent pas être sauvés.
-
-Et surtout, tu peux découvrir quelque chose que beaucoup d'enfants parents mettent des années à comprendre :
-
-Tu n'es pas née pour réparer tout le monde.
-
-Tu avais le droit d'être une enfant. Et aujourd'hui encore, tu as le droit d'être simplement une femme qui n'a pas besoin de mériter sa place, son repos ou son bonheur.
-
-Tu n'as rien à rembourser. Tu n'as pas de dette invisible. Tu n'as pas à gagner le droit d'exister.
-
-Tu peux commencer à vivre sans porter le monde sur ton dos. Même si, au début, ça te paraît étrange. Même si une partie de toi culpabilise encore.
-
-Parce que cette culpabilité n'est pas ton identité. C'est juste une vieille habitude. Et une habitude, ça peut se désapprendre.`,
-            'bouc_emissaire_0': `Tu connais peut-être cette sensation étrange.
-
-Personne ne t'a encore reproché quoi que ce soit, mais tu es déjà en train d'expliquer.
-
-Tu détailles.
-
-Tu argumentes.
-
-Tu précises.
-
-Tu cherches les bons mots.
-
-Tu as peur qu'on te comprenne mal.
-
-Tu as peur qu'on pense que tu es méchante.
-
-Tu as peur qu'on te fasse passer pour ce que tu n'es pas.
-
-Alors tu anticipes.
-
-Tu te défends avant même d'être attaquée.
-
-Et parfois, tu t'excuses alors que tu n'as rien fait.
-
-Tu dis :
-
-« Désolée de te déranger. »
-
-« Désolée, je voulais juste dire que... »
-
-« Désolée, mais je pense que... »
-
-Comme si avoir une opinion était déjà une faute.
-
-Comme si exister demandait une autorisation.
-
-Tu sais ce qu'il y a de fou ?
-
-Les autres ne se justifient pas autant.
-
-Ils disent.
-
-Ils décident.
-
-Ils refusent.
-
-Ils changent d'avis.
-
-Ils se trompent.
-
-Et ils continuent à vivre.
-
-Toi, non.
-
-Toi, tu repasses la conversation dans ta tête.
-
-Tu te demandes si tu as été trop directe.
-
-Trop froide.
-
-Trop sensible.
-
-Trop exigeante.
-
-Pas assez gentille.
-
-Tu analyses tout.
-
-Parce qu'une partie de toi a appris très tôt que le problème, c'était souvent toi.
-
-Peut-être qu'on t'a reproché des choses qui ne t'appartenaient pas.
-
-Peut-être qu'il fallait bien que quelqu'un soit responsable des tensions dans la maison.
-
-Alors, sans le savoir, tu as pris cette place.
-
-La place de celle qui dérange.
-
-La place de celle qui est compliquée.
-
-La place de celle qui fait toujours quelque chose de travers.
-
-Et quand tu entends ça pendant des années, tu finis par te surveiller toi-même.
-
-Tu deviens ton propre juge.
-
-Tu vérifies tout.
-
-Tes mots.
-
-Ton comportement.
-
-Tes réactions.
-
-Tu cherches à ne pas déplaire.
-
-Parce qu'au fond, tu as peur d'être rejetée.
-
-Alors tu fais des efforts énormes pour être comprise.
-
-Mais tu sais ce qui est épuisant ?
-
-Les gens qui t'aiment vraiment n'ont pas besoin de cinquante explications.
-
-Ils n'ont pas besoin que tu fasses un dossier complet pour expliquer pourquoi tu es fatiguée.
-
-Pourquoi tu refuses.
-
-Pourquoi tu as changé d'avis.
-
-Ils respectent simplement ce que tu dis.
-
-Mais comme tu n'as pas toujours connu ça, tu continues à croire que tu dois convaincre.
-
-Alors tu rencontres parfois des personnes qui adorent ça.
-
-Des gens qui remettent tout en question.
-
-Des gens qui te font douter.
-
-Des gens qui retournent les situations.
-
-Des gens qui te poussent à te défendre encore et encore.
-
-Et comme c'est familier, tu restes plus longtemps que les autres.
-
-Parce qu'une partie de toi connaît déjà ce terrain.
-
-Tu l'as appris très tôt.
-
-Mais être habituée à quelque chose ne veut pas dire que c'est normal.
-
-Ce n'est pas normal de devoir prouver sans arrêt que tu es quelqu'un de bien.
-
-Ce n'est pas normal de te sentir coupable d'avoir une limite.
-
-Ce n'est pas normal d'avoir peur de décevoir tout le monde.
-
-Et surtout, ce n'est pas normal de croire que tu dois mériter le droit d'être entendue.
-
-Tu n'as pas besoin d'un avocat pour expliquer ton existence.
-
-Tu n'as pas besoin d'un témoin pour justifier tes émotions.
-
-Tu n'as pas besoin d'un jury pour valider ce que tu ressens.
-
-Tu peux dire non.
-
-Tu peux changer d'avis.
-
-Tu peux te tromper.
-
-Tu peux partir.
-
-Tu peux ne pas être d'accord.
-
-Tu peux être fatiguée.
-
-Tu peux ne pas avoir envie.
-
-Et tu peux même ne pas te justifier.
-
-Parce qu'au fond, le vrai problème n'est pas que tu expliques trop.
-
-Le vrai problème, c'est qu'on t'a appris à douter de ta propre légitimité.
-
-Mais cette histoire-là n'est pas une condamnation.
-
-Tu n'es pas la personne qu'on a désignée.
-
-Tu n'es pas celle qu'on a accusée.
-
-Tu n'es pas le problème.
-
-Tu es peut-être simplement quelqu'un qui a vécu trop longtemps avec l'impression qu'il fallait se défendre pour avoir le droit d'exister.
-
-Et ça, ça peut changer.
-
-Petit à petit.
-
-Parce qu'un jour, tu découvriras quelque chose de presque étrange.
-
-Les personnes saines ne te demandent pas de plaider ta cause.
-
-Elles t'écoutent.
-
-Et ça change tout.`,
-            'enfant_invisible_0': `Tu as peut-être pris cette habitude tellement tôt que tu ne la vois même plus.
-
-Quand quelqu'un te demande ce que tu veux manger, tu réponds :
-
-« Comme tu veux. »
-
-Quand on te demande où tu veux aller, tu dis :
-
-« Ça m'est égal. »
-
-Quand quelque chose te blesse, tu réponds :
-
-« Ce n'est pas grave. »
-
-Quand tu es fatiguée, tu continues.
-
-Quand tu as besoin d'aide, tu attends.
-
-Et quand tu craques enfin, tu as presque honte.
-
-Parce qu'au fond, tu as appris une chose très jeune.
-
-Ne dérange pas.
-
-Ne demande pas trop.
-
-Ne prends pas trop de place.
-
-Ne sois pas compliquée.
-
-Alors tu t'es adaptée.
-
-Tu es devenue autonome.
-
-Pas l'autonomie joyeuse, celle qu'on choisit.
-
-L'autonomie de survie.
-
-Celle qui dit :
-
-« Je vais me débrouiller seule. »
-
-Parce qu'attendre quelque chose des autres, c'était risquer d'être déçue.
-
-Peut-être qu'on ne t'écoutait pas beaucoup.
-
-Peut-être qu'il y avait plus urgent que toi.
-
-Plus bruyant que toi.
-
-Plus fragile que toi.
-
-Plus compliqué que toi.
-
-Alors tu as compris que tes besoins pouvaient attendre.
-
-Encore un peu.
-
-Toujours un peu.
-
-Et tu es devenue cette femme qui sait tout faire.
-
-Tu n'embêtes personne.
-
-Tu t'arranges.
-
-Tu encaisses.
-
-Tu trouves des solutions.
-
-Tu fais avec.
-
-Et les autres te trouvent forte.
-
-Mais ce qu'ils appellent de la force est parfois une immense solitude.
-
-Parce qu'au fond, tu t'es habituée à ne compter que sur toi.
-
-Tu as du mal à demander.
-
-Tu as du mal à recevoir.
-
-Tu as du mal à dire :
-
-« J'ai besoin de toi. »
-
-Tu préfères dire :
-
-« T'inquiète, ça va. »
-
-Même quand ça ne va pas.
-
-Tu sais ce qui est étrange ?
-
-Tu comprends très bien les besoins des autres.
-
-Tu repères tout.
-
-Tu vois quand quelqu'un est triste.
-
-Tu sais écouter.
-
-Tu sais rassurer.
-
-Mais quand il s'agit de toi, tu deviens floue.
-
-Tu repousses.
-
-Tu attends.
-
-Tu minimises.
-
-Tu te dis que ça peut attendre.
-
-Tu as peut-être déjà vécu ça.
-
-Tu es malade, mais tu continues.
-
-Tu es épuisée, mais tu continues.
-
-Tu es blessée, mais tu continues.
-
-Et quand quelqu'un t'aide enfin, tu réponds :
-
-« Fallait pas. »
-
-Comme si recevoir était une dette.
-
-Comme si être aidée était un privilège que tu ne mérites pas vraiment.
-
-Alors tu donnes beaucoup.
-
-Parce que donner te semble naturel.
-
-Mais recevoir, ça te met mal à l'aise.
-
-Tu as peur d'être un poids.
-
-Tu as peur d'être envahissante.
-
-Tu as peur qu'on pense que tu exagères.
-
-Alors tu te tais.
-
-Et parfois, les autres finissent vraiment par t'oublier.
-
-Pas parce qu'ils ne t'aiment pas.
-
-Mais parce que tu leur as montré pendant des années que tu n'avais besoin de rien.
-
-Tu es devenue la femme qui gère.
-
-La femme solide.
-
-La femme discrète.
-
-La femme qui ne demande jamais rien.
-
-Et un jour, tu te surprends à ressentir quelque chose de douloureux.
-
-Tu as l'impression que personne ne pense à toi.
-
-Que personne ne te comprend.
-
-Que personne ne voit tes efforts.
-
-Et cette douleur est réelle.
-
-Mais il y a une chose difficile à entendre.
-
-Les autres ne peuvent pas toujours deviner ce que tu ne montres jamais.
-
-Ils ne savent pas que tu es fatiguée.
-
-Ils ne savent pas que tu as besoin d'être soutenue.
-
-Ils ne savent pas que tu attends un geste.
-
-Parce que tu as passé une vie entière à cacher tes besoins.
-
-Tu sais ce qui est triste ?
-
-Tu t'es tellement habituée à vivre avec peu que tu finis parfois par croire que c'est normal.
-
-Tu t'adaptes aux miettes.
-
-Tu te contentes du minimum.
-
-Tu excuses beaucoup.
-
-Tu supportes beaucoup.
-
-Tu attends longtemps.
-
-Parce qu'une partie de toi continue à croire qu'il ne faut pas demander plus.
-
-Mais tu n'es plus cette petite fille qui attendait qu'on la remarque.
-
-Tu as le droit de dire que tu es fatiguée.
-
-Tu as le droit d'avoir besoin d'aide.
-
-Tu as le droit d'avoir des envies.
-
-Tu as le droit de déranger.
-
-Tu as le droit d'être déçue.
-
-Tu as le droit de demander.
-
-Tu as le droit d'avoir des attentes.
-
-Tu as le droit de prendre de la place.
-
-Et surtout, tu as le droit d'exister autrement qu'en étant celle qui se débrouille toute seule.
-
-Parce qu'au fond, tu ne voulais pas être indépendante à ce point.
-
-Tu voulais simplement être rassurée.
-
-Tu voulais qu'on pense à toi.
-
-Tu voulais qu'on te voie.
-
-Et crois-moi, avoir besoin d'amour, d'attention ou de soutien ne fait pas de toi quelqu'un de faible.
-
-Ça fait juste de toi un être humain.
-
-Et il n'y a rien de honteux là-dedans.`,
-            'enfant_oublie_0': `Tu l'entends souvent.
-
-« Toi, tu es forte. »
-
-« Toi, tu t'en sors toujours. »
-
-« Toi, tu n'as besoin de personne. »
-
-Et parfois, les gens disent ça comme un compliment.
-
-Mais ils ne savent pas que cette force-là, tu ne l'as pas choisie.
-
-Tu l'as apprise.
-
-Parce qu'à un moment de ta vie, tu as compris qu'il ne fallait pas trop attendre.
-
-Peut-être qu'on était occupé.
-
-Peut-être qu'il y avait plus fragile que toi.
-
-Plus malade.
-
-Plus bruyant.
-
-Plus compliqué.
-
-Alors tu as appris à faire seule.
-
-Seule pour tes émotions.
-
-Seule pour tes peurs.
-
-Seule pour tes problèmes.
-
-Tu as appris à ne pas déranger.
-
-À ne pas demander.
-
-À trouver des solutions.
-
-À attendre que ça passe.
-
-Et avec le temps, cette manière de survivre est devenue ta personnalité.
-
-Tu es devenue autonome.
-
-Indépendante.
-
-Débrouillarde.
-
-Mais derrière cette autonomie, il y a parfois une immense fatigue.
-
-Parce qu'au fond, tu ne voulais pas tout faire seule.
-
-Tu voulais juste être rassurée.
-
-Tu voulais qu'on pense à toi.
-
-Tu voulais qu'on te remarque sans que tu sois obligée de crier.
-
-Alors tu as arrêté de demander.
-
-Tu t'es habituée.
-
-Tu t'es dit :
-
-« Je vais me débrouiller. »
-
-« Ce n'est pas grave. »
-
-« Ça peut attendre. »
-
-Et tu as continué.
-
-Tu sais ce qui est étrange ?
-
-Tu es capable d'aider tout le monde.
-
-Tu réponds présente.
-
-Tu trouves des solutions.
-
-Tu rassures.
-
-Tu écoutes.
-
-Mais quand quelqu'un te demande :
-
-« Qu'est-ce que je peux faire pour toi ? »
-
-Tu ne sais plus quoi répondre.
-
-Parce que recevoir te met mal à l'aise.
-
-Tu réponds :
-
-« Rien, ça va. »
-
-« T'inquiète. »
-
-« Je vais gérer. »
-
-Même quand tu es épuisée.
-
-Même quand tu aurais besoin qu'on te prenne dans les bras.
-
-Même quand tu aurais envie que quelqu'un prenne le relais.
-
-Mais une petite voix te dit :
-
-« Ne dérange pas. »
-
-« Débrouille-toi. »
-
-« Les autres ont déjà assez de problèmes. »
-
-Alors tu continues.
-
-Et les gens finissent par croire que tu n'as besoin de rien.
-
-Parce que c'est ce que tu leur montres.
-
-Tu sais combien de femmes vivent avec cette phrase dans la tête ?
-
-« Je n'ai besoin de personne. »
-
-Et elles en sont presque fières.
-
-Alors qu'en réalité, cette phrase est parfois une cicatrice.
-
-Parce que les êtres humains ne sont pas faits pour tout traverser seuls.
-
-Tu as peut-être connu cette scène.
-
-Tu es malade.
-
-Tu es triste.
-
-Tu as peur.
-
-Mais tu ne le dis à personne.
-
-Tu attends.
-
-Tu gères.
-
-Tu souris.
-
-Et quand ça devient trop lourd, tu craques en silence.
-
-Parce que tu as honte d'avoir besoin.
-
-Tu as honte d'être fatiguée.
-
-Tu as honte de demander.
-
-Tu sais ce qui est triste ?
-
-Tu as parfois l'impression que personne ne pense à toi.
-
-Que personne ne t'aide.
-
-Que personne ne te comprend.
-
-Mais comment les autres pourraient-ils savoir ce que tu caches depuis des années ?
-
-Tu as tellement appris à disparaître derrière ton efficacité que les gens finissent par croire que tu n'as besoin de rien.
-
-Et pourtant, au fond de toi, il y a peut-être encore cette petite fille qui attendait qu'on vienne vers elle.
-
-Sans qu'elle soit obligée de réclamer.
-
-Sans qu'elle soit obligée d'expliquer.
-
-Sans qu'elle soit obligée d'être parfaite.
-
-Juste parce qu'elle existait.
-
-Tu sais quoi ?
-
-Tu n'as pas été mise sur cette terre pour survivre seule.
-
-Tu n'es pas obligée d'être forte tout le temps.
-
-Tu n'es pas obligée d'avoir réponse à tout.
-
-Tu n'es pas obligée d'être celle qui gère toujours.
-
-Tu peux être fatiguée.
-
-Tu peux être perdue.
-
-Tu peux demander.
-
-Tu peux recevoir.
-
-Tu peux t'appuyer sur quelqu'un.
-
-Et ça ne fait pas de toi quelqu'un de faible.
-
-Ça fait juste de toi quelqu'un de vivant.
-
-Parce qu'au fond, ce n'est pas l'indépendance que tu cherchais.
-
-C'était la sécurité.
-
-Tu voulais juste être certaine qu'il y aurait quelqu'un.
-
-Quelqu'un qui pense à toi.
-
-Quelqu'un qui reste.
-
-Quelqu'un qui te voit.
-
-Et la vérité, c'est que tu mérites ça.
-
-Tu n'as pas besoin de prouver que tu souffres assez.
-
-Tu n'as pas besoin d'attendre d'être au bord de l'épuisement pour demander.
-
-Tu n'as pas besoin de continuer à faire semblant.
-
-Tu peux arrêter de tout porter seule.
-
-Parce que tu n'as jamais été faite pour traverser toute ta vie comme une île.
-
-Tu es un être humain.
-
-Et les êtres humains ont besoin des autres.
-
-Il n'y a aucune honte là-dedans.
-
-Aucune.`,
-            'enfant_sauveur_0': `Tu remarques des choses que les autres ne voient même pas.
-
-Le ton d'une voix.
-
-Un regard.
-
-Un silence.
-
-Une phrase qui change.
-
-Une porte qui claque un peu plus fort.
-
-Une tension dans une pièce.
-
-Et avant même que les autres comprennent qu'il se passe quelque chose, toi, tu l'as déjà senti.
-
-Tu n'appelles pas ça de l'hypervigilance.
-
-Tu appelles ça être attentive.
-
-Être sensible.
-
-Être observatrice.
-
-Mais la vérité est parfois moins jolie.
-
-Tu as appris à surveiller.
-
-Parce qu'à un moment de ta vie, surveiller t'a protégée.
-
-Peut-être qu'il fallait deviner l'humeur de quelqu'un.
-
-Peut-être qu'il fallait éviter une colère.
-
-Peut-être qu'il fallait sentir venir les problèmes avant qu'ils n'explosent.
-
-Alors ton cerveau s'est adapté.
-
-Il est devenu rapide.
-
-Très rapide.
-
-Il scanne.
-
-Il analyse.
-
-Il anticipe.
-
-Et aujourd'hui encore, il continue.
-
-Tu prépares des conversations qui n'ont jamais lieu.
-
-Tu imagines des scénarios catastrophes.
-
-Tu cherches des solutions à des problèmes qui n'existent pas encore.
-
-Tu réfléchis à ce qu'il faudra dire.
-
-À ce qu'il faudra faire.
-
-À ce qu'il faudra éviter.
-
-Et tu crois que tout le monde fonctionne comme ça.
-
-Mais non.
-
-Tout le monde ne vit pas avec un radar allumé vingt-quatre heures sur vingt-quatre.
-
-Tu connais peut-être cette fatigue étrange.
-
-Tu pars en vacances, mais ton cerveau continue.
-
-Tu es devant un film, mais ton cerveau continue.
-
-Tu te couches, mais ton cerveau continue.
-
-Parce qu'il croit qu'il doit rester éveillé pour protéger tout le monde.
-
-Alors tu anticipes les besoins des autres.
-
-Tu devines.
-
-Tu prévois.
-
-Tu prends les devants.
-
-Tu gères.
-
-Et souvent, personne ne te l'a demandé.
-
-Tu le fais naturellement.
-
-Parce qu'une partie de toi croit encore que si tu baisses la garde, quelque chose de grave va arriver.
-
-Tu es celle qui pense aux anniversaires.
-
-Aux papiers.
-
-Aux rendez-vous.
-
-Aux problèmes.
-
-Aux émotions.
-
-Aux disputes.
-
-Aux mots qu'il faudra trouver.
-
-Aux silences qu'il faudra réparer.
-
-Tu fais le travail invisible.
-
-Et parfois, personne ne le voit.
-
-Tu sais ce qui est étrange ?
-
-Quand tout va bien, tu es presque mal à l'aise.
-
-Le calme te paraît bizarre.
-
-Tu attends quelque chose.
-
-Une mauvaise nouvelle.
-
-Un problème.
-
-Une dispute.
-
-Comme si le bonheur était suspect.
-
-Comme si la tranquillité était une parenthèse qui allait forcément se terminer.
-
-Alors tu restes prête.
-
-Toujours prête.
-
-Et cette vigilance permanente te vole énormément d'énergie.
-
-Tu peux être épuisée sans comprendre pourquoi.
-
-Parce que tu ne portes pas seulement tes problèmes.
-
-Tu portes aussi ceux qui pourraient arriver.
-
-Et c'est énorme.
-
-Tu sais ce qui est encore plus fatigant ?
-
-Tu crois souvent que tout dépend de toi.
-
-Que si quelque chose tourne mal, tu aurais dû le voir.
-
-Tu aurais dû prévoir.
-
-Tu aurais dû empêcher.
-
-Tu aurais dû faire mieux.
-
-Mais tu n'es pas Dieu.
-
-Tu n'es pas responsable de tout.
-
-Tu n'es pas responsable des choix des autres.
-
-Tu n'es pas responsable de leurs émotions.
-
-Tu n'es pas responsable de leurs erreurs.
-
-Tu n'es pas responsable de leur bonheur.
-
-Et pourtant, tu continues parfois à vivre comme si le monde entier reposait sur tes épaules.
-
-Tu as peut-être même du mal à te détendre parce qu'au fond, te reposer te donne l'impression d'être inutile.
-
-Tu culpabilises quand tu ne fais rien.
-
-Tu culpabilises quand tu prends du temps pour toi.
-
-Tu culpabilises quand tu t'arrêtes.
-
-Parce que tu as associé l'amour à l'utilité.
-
-Tu crois qu'il faut servir.
-
-Réparer.
-
-Protéger.
-
-Sauver.
-
-Mais aimer ne veut pas dire surveiller.
-
-Aimer ne veut pas dire anticiper toutes les catastrophes.
-
-Aimer ne veut pas dire t'épuiser.
-
-Tu as le droit d'être tranquille.
-
-Tu as le droit de ne pas savoir.
-
-Tu as le droit de laisser les autres gérer leurs propres tempêtes.
-
-Tu as le droit de ne pas être celle qui pense à tout.
-
-Tu as le droit de fermer ton radar.
-
-Même quelques heures.
-
-Même quelques minutes.
-
-Le monde ne s'écroulera pas.
-
-Et peut-être qu'au début, ça te fera peur.
-
-Parce que tu as vécu tellement longtemps en mode survie que le calme te paraît étrange.
-
-Mais le calme n'est pas dangereux.
-
-Le repos n'est pas dangereux.
-
-La paix n'est pas dangereuse.
-
-Tu n'es plus obligée de passer ta vie à attendre la prochaine catastrophe.
-
-Tu peux respirer.
-
-Tu peux te tromper.
-
-Tu peux lâcher certaines responsabilités.
-
-Tu peux laisser les autres devenir adultes.
-
-Et surtout, tu peux découvrir quelque chose que beaucoup d'enfants sauveurs mettent des années à comprendre.
-
-Tu n'es pas née pour empêcher tous les drames.
-
-Tu étais juste une enfant qui essayait de protéger son monde avec les moyens qu'elle avait.
-
-Et cette enfant mérite enfin de se reposer.`,
-            'enfant_mediateur_0': `Tu le fais presque sans t'en rendre compte.
-
-Tu sens qu'il y a une tension, alors tu cherches à la calmer.
-
-Tu vois deux personnes fâchées, alors tu cherches un compromis.
-
-Tu entends quelqu'un souffrir, alors tu veux l'aider.
-
-Tu vois quelqu'un triste, alors tu cherches les mots qui vont soulager.
-
-Tu as toujours été comme ça.
-
-Enfin, c'est ce que tu crois.
-
-Mais peut-être que tu n'es pas née comme ça.
-
-Peut-être que tu l'es devenue.
-
-Parce qu'à un moment, dans ta famille, quelqu'un devait maintenir la paix.
-
-Quelqu'un devait arrondir les angles.
-
-Quelqu'un devait éviter que tout explose.
-
-Alors tu as pris cette place.
-
-Tu es devenue celle qui comprend tout le monde.
-
-Celle qui excuse.
-
-Celle qui écoute.
-
-Celle qui fait le lien.
-
-Celle qui apaise.
-
-Et plus tu faisais ça, plus tu avais l'impression d'avoir une utilité.
-
-Tu as appris qu'être aimée passait par là.
-
-Pas en demandant.
-
-Pas en prenant de la place.
-
-Mais en étant utile.
-
-Alors aujourd'hui encore, tu continues.
-
-Tu écoutes pendant des heures.
-
-Tu rassures.
-
-Tu conseilles.
-
-Tu trouves des solutions.
-
-Tu fais des efforts pour tout le monde.
-
-Tu cherches à sauver les couples.
-
-Les familles.
-
-Les amitiés.
-
-Tu veux que tout le monde aille bien.
-
-Parce qu'au fond, quand les autres vont mal, quelque chose en toi se met immédiatement en alerte.
-
-Tu ressens leur souffrance.
-
-Tu ressens leurs angoisses.
-
-Tu ressens leurs tensions.
-
-Et parfois, tu les ressens tellement fort que tu finis par ne plus savoir ce qui t'appartient.
-
-Tu absorbes.
-
-Tu portes.
-
-Tu prends.
-
-Tu ramasses les morceaux.
-
-Et tu appelles ça aimer.
-
-Mais aimer n'a jamais voulu dire devenir l'infirmière émotionnelle de tout le monde.
-
-Tu sais ce qui est étrange ?
-
-Tu es capable d'avoir une patience infinie avec les autres.
-
-Tu comprends leurs blessures.
-
-Tu excuses leurs comportements.
-
-Tu leur laisses du temps.
-
-Mais avec toi, tu es souvent beaucoup plus dure.
-
-Tu te reproches d'être fatiguée.
-
-Tu te reproches d'en avoir marre.
-
-Tu te reproches même parfois de ne plus avoir envie d'aider.
-
-Comme si tu trahissais ton rôle.
-
-Comme si tu devenais une mauvaise personne.
-
-Alors tu continues.
-
-Même quand tu n'en peux plus.
-
-Même quand ton corps te demande de ralentir.
-
-Même quand tu n'as plus d'énergie.
-
-Parce qu'une partie de toi a peur.
-
-Peur que les autres s'éloignent.
-
-Peur qu'on ne t'aime plus.
-
-Peur qu'on t'abandonne.
-
-Peur qu'on découvre que tu ne sers plus à rien.
-
-Et cette peur-là est épuisante.
-
-Tu sais ce qui est encore plus cruel ?
-
-Tu attires parfois des personnes qui aiment être sauvées.
-
-Des personnes qui prennent.
-
-Des personnes qui se reposent sur toi.
-
-Des personnes qui te racontent leurs drames pendant des années sans jamais changer.
-
-Et toi, tu restes.
-
-Parce que tu crois que si tu fais encore un effort, elles finiront par aller mieux.
-
-Mais tu ne peux pas guérir quelqu'un qui ne veut pas guérir.
-
-Tu ne peux pas faire le travail à sa place.
-
-Tu ne peux pas vivre pour deux.
-
-Et surtout, tu ne peux pas continuer à te perdre.
-
-Parce que pendant que tu répares tout le monde, qui s'occupe de toi ?
-
-Qui t'écoute ?
-
-Qui te rassure ?
-
-Qui te demande comment tu vas vraiment ?
-
-Souvent, personne.
-
-Parce que tu as tellement habitué les autres à être solide qu'ils oublient que toi aussi, tu peux être fatiguée.
-
-Et parfois, tu leur en veux.
-
-Tu leur en veux de ne pas deviner.
-
-Tu leur en veux de ne pas faire pour toi ce que tu fais pour eux.
-
-Mais ils ne savent même pas que tu attends ça.
-
-Parce que tu ne demandes rien.
-
-Tu donnes.
-
-Encore.
-
-Toujours.
-
-Jusqu'au jour où tu craques.
-
-Jusqu'au jour où tu n'as plus envie.
-
-Jusqu'au jour où tu te sens vide.
-
-Et là, tu te demandes :
-
-« Pourquoi personne ne prend soin de moi ? »
-
-La vérité est douloureuse.
-
-Tu as passé tellement d'années à être celle qui répare que tu as oublié que tu avais le droit d'être simplement aimée.
-
-Sans fonction.
-
-Sans mission.
-
-Sans sacrifice.
-
-Tu as le droit d'être triste.
-
-Tu as le droit d'être perdue.
-
-Tu as le droit d'avoir besoin.
-
-Tu as le droit de laisser quelqu'un se débrouiller.
-
-Tu as le droit de dire :
-
-« Je ne peux pas. »
-
-Tu as le droit de ne pas répondre.
-
-Tu as le droit de ne pas sauver.
-
-Parce que les gens ont le droit de grandir.
-
-Le droit de se tromper.
-
-Le droit d'apprendre.
-
-Et toi, tu as le droit de vivre.
-
-Tu n'es pas née pour réparer le monde entier.
-
-Tu étais juste une petite fille qui avait compris que maintenir la paix était peut-être le seul moyen de garder l'amour autour d'elle.
-
-Mais aujourd'hui, tu n'as plus besoin de gagner cet amour.
-
-Tu peux enfin découvrir quelque chose d'immense.
-
-Tu peux être aimée même quand tu ne sauves personne.
-
-Et ça, au début, ça paraît presque incroyable.
-
-Mais c'est vrai.`,
-            'enfant_prefere_0': `Quand on parle de l'enfant préféré, beaucoup imaginent immédiatement une vie plus facile.
-
-Plus d'amour.
-
-Plus d'attention.
-
-Plus de soutien.
-
-Et pourtant, ceux qui ont vécu cette place savent que les choses sont plus compliquées que ça.
-
-Parce qu'être préférée ne veut pas dire être libre.
-
-Être préférée ne veut pas dire être heureuse.
-
-Et surtout, être préférée ne veut pas dire ne pas souffrir.
-
-Peut-être que tu étais celle qu'on montrait davantage.
-
-Celle dont on parlait avec fierté.
-
-Celle qu'on protégeait plus.
-
-Celle qui recevait plus de compliments.
-
-Ou peut-être que tu étais simplement celle qui répondait le mieux aux attentes.
-
-Alors naturellement, tu as pris cette place.
-
-Sans même t'en rendre compte.
-
-Mais très vite, tu as senti quelque chose.
-
-Les regards.
-
-Les comparaisons.
-
-Les jalousies.
-
-Les petites remarques.
-
-Les silences.
-
-Cette sensation étrange qu'il y avait quelque chose de déséquilibré.
-
-Et même si personne ne le disait ouvertement, tu le sentais.
-
-Parce qu'un enfant sent tout.
-
-Tu sentais que certains recevaient moins.
-
-Tu sentais parfois la colère.
-
-Tu sentais les injustices.
-
-Et comme tous les enfants, tu as fait ce que tu as pu avec ce que tu comprenais.
-
-Tu as commencé à culpabiliser.
-
-Pas consciemment.
-
-Mais doucement.
-
-Tu as appris à ne pas trop montrer tes réussites.
-
-À ne pas trop parler de tes joies.
-
-À minimiser tes réussites.
-
-À faire attention.
-
-Parce qu'une partie de toi craignait de faire du mal aux autres.
-
-Et puis il y avait une autre peur.
-
-Celle de perdre cette place.
-
-Parce qu'au fond, être préférée peut devenir une prison.
-
-Quand on est la préférée, on a peur de décevoir.
-
-On a peur de perdre l'amour.
-
-On a peur de ne plus être assez.
-
-Alors on devient exigeante avec soi-même.
-
-On veut bien faire.
-
-On veut réussir.
-
-On veut rendre fier.
-
-On veut être irréprochable.
-
-Et sans le voir, toute la vie tourne autour d'une question.
-
-« Est-ce que je mérite encore d'être aimée ? »
-
-Alors tu travailles.
-
-Tu fais des efforts.
-
-Tu fais plaisir.
-
-Tu supportes.
-
-Tu encaisses.
-
-Tu pardonnes.
-
-Tu prends soin des autres.
-
-Parce qu'une partie de toi continue à croire qu'il faut mériter sa place.
-
-Tu sais ce qui est triste ?
-
-Tu peux te sentir coupable même quand quelque chose de bien t'arrive.
-
-Une promotion.
-
-Une rencontre.
-
-Une réussite.
-
-Un voyage.
-
-Un bonheur.
-
-Parce qu'une petite voix vient parfois murmurer :
-
-« Pourquoi toi ? »
-
-« Les autres ont moins eu. »
-
-« Tu n'as pas le droit de te plaindre. »
-
-« Tu devrais être reconnaissante. »
-
-Alors tu réduis tes envies.
-
-Tu minimises tes douleurs.
-
-Tu t'interdis parfois d'être heureuse pleinement.
-
-Comme si souffrir te rendait plus légitime.
-
-Comme si tu devais compenser.
-
-Mais tu n'as rien volé.
-
-Tu n'as rien pris à personne.
-
-Tu n'es pas responsable des préférences des adultes.
-
-Tu étais un enfant.
-
-Tu n'as jamais demandé à recevoir plus.
-
-Et tu n'as pas à passer ta vie à réparer des injustices que tu n'as pas créées.
-
-Tu sais ce qui fait le plus souffrir beaucoup d'enfants préférés ?
-
-Le doute.
-
-Parce qu'au fond, ils se demandent :
-
-« Si je ne réussis plus, est-ce qu'on m'aimera encore ? »
-
-« Si je déçois, est-ce que je vais perdre ma place ? »
-
-« Si j'arrête d'être forte, est-ce qu'on restera ? »
-
-Alors ils continuent.
-
-Ils deviennent perfectionnistes.
-
-Ils veulent être utiles.
-
-Ils veulent être irréprochables.
-
-Ils veulent que tout le monde soit fier.
-
-Mais à force de vouloir être parfaits, ils finissent par oublier qui ils sont.
-
-Parce qu'être aimé ne devrait jamais dépendre d'une performance.
-
-Tu n'as pas besoin d'être la meilleure.
-
-Tu n'as pas besoin de sauver tout le monde.
-
-Tu n'as pas besoin de te rendre malade pour prouver que tu mérites l'amour.
-
-Tu n'as pas besoin de te punir parce que tu as reçu davantage.
-
-Tu n'as pas besoin de te sentir coupable d'être heureuse.
-
-Tu n'as pas besoin de t'excuser d'exister.
-
-Tu as le droit d'être imparfaite.
-
-Tu as le droit d'échouer.
-
-Tu as le droit de te reposer.
-
-Tu as le droit de décevoir.
-
-Tu as le droit de vivre pour toi.
-
-Parce qu'au fond, tu étais juste une petite fille qui voulait être aimée.
-
-Comme tout le monde.
-
-Et cette petite fille n'a jamais eu à payer le prix des choix des adultes.
-
-Elle avait juste besoin qu'on l'aime.
-
-Pas qu'on la choisisse.
-
-Et ça, ce n'est pas la même chose.`
-        };
-        
-        function initializeQuestions() {
-            const stored = localStorage.getItem('redFlagFamilleAnswers');
-            answers = stored ? JSON.parse(stored) : {};
-            renderQuestions();
-            renderLibrary();
-        }
-        
-        function renderQuestions() {
-            const container = document.getElementById('questionsContainer');
-            let html = '';
-            questions.forEach(section => {
-                html += `<h3 style="margin-top: 30px; margin-bottom: 16px; font-size: 16px; font-weight: 600; color: #8b7355; border-left: 4px solid #ba7517; padding-left: 12px;">${section.category}</h3>`;
-                section.questions.forEach((q, idx) => {
-                    const qId = `${section.id}_${idx}`;
-                    const selected = Object.prototype.hasOwnProperty.call(answers, qId) ? answers[qId] : null;
-                    html += `<div class="question-group"><div class="question-title"><span style="color: #ba7517; font-weight: 700;">•</span>${q.text}</div><div class="options">
-                        <button class="option-btn ${selected === 0 ? 'selected' : ''}" onclick="setAnswer('${qId}', 0)">Pas du tout</button>
-                        <button class="option-btn ${selected === 1 ? 'selected' : ''}" onclick="setAnswer('${qId}', 1)">Un peu</button>
-                        <button class="option-btn ${selected === 2 ? 'selected' : ''}" onclick="setAnswer('${qId}', 2)">Souvent</button>
-                        <button class="option-btn ${selected === 3 ? 'selected' : ''}" onclick="setAnswer('${qId}', 3)">Tout à fait</button>
-                    </div></div>`;
-                });
-            });
-            container.innerHTML = html;
-            updateProgress();
-        }
-        
-        function setAnswer(qId, value) {
-            answers[qId] = value;
-            localStorage.setItem('redFlagFamilleAnswers', JSON.stringify(answers));
-            renderQuestions();
-        }
-        
-        function updateProgress() {
-            const totalQuestions = questions.reduce((sum, s) => sum + s.questions.length, 0);
-            const validQuestionIds = questions.flatMap(section => section.questions.map((_, idx) => `${section.id}_${idx}`));
-            const answered = validQuestionIds.filter(qId => Object.prototype.hasOwnProperty.call(answers, qId)).length;
-            const percent = (answered / totalQuestions) * 100;
-            document.getElementById('progressFill').style.width = percent + '%';
-            const submitBtn = document.getElementById('submitBtn');
-            if (submitBtn) {
-                submitBtn.style.display = answered === totalQuestions ? 'inline-block' : 'none';
-            }
-        }
-        
-        function calculateScores() {
-            const scores = {};
-            questions.forEach(section => {
-                let sectionScore = 0, maxScore = 0;
-                section.questions.forEach((q, idx) => {
-                    const qId = `${section.id}_${idx}`;
-                    const answer = Object.prototype.hasOwnProperty.call(answers, qId) ? answers[qId] : 0;
-                    sectionScore += (answer * q.weight);
-                    maxScore += (3 * q.weight);
-                });
-                scores[section.id] = {raw: sectionScore, max: maxScore, percent: Math.round((sectionScore / maxScore) * 100)};
-            });
-            return scores;
-        }
-        
-        function getScoreColor(percent) {
-            if (percent < 20) return {bg: '#EAF3DE', border: '#639922', fill: '#639922', text: '#3b6d11'};
-            if (percent < 40) return {bg: '#FAEEDA', border: '#ba7517', fill: '#ba7517', text: '#854f0b'};
-            if (percent < 60) return {bg: '#FAECE7', border: '#993c1d', fill: '#993c1d', text: '#712b13'};
-            return {bg: '#FCEBEB', border: '#e24b4a', fill: '#e24b4a', text: '#a32d2d'};
-        }
-        
-        function getProfileName(category, percent) {
-            const profiles = {
-                'manipulation': {low: 'Relation plutôt stable', med: 'Signes de manipulation', high: 'Manipulation importante'},
-                'parentification': {low: 'Limites claires', med: 'Rôles inversés légers', high: 'Inversion de rôle majeure'},
-                'favoritisme': {low: 'Équité perçue', med: 'Comparaisons fréquentes', high: 'Favoritisme destructeur'},
-                'culpabilite': {low: 'Autonomie émotionnelle', med: 'Culpabilité modérée', high: 'Culpabilité transgénérationnelle'},
-                'fratrie': {low: 'Fratrie plutôt soutenante', med: 'Tensions modérées', high: 'Alliance familiale douloureuse'}
-            };
-            let level = 'low';
-            if (percent >= 60) level = 'high';
-            else if (percent >= 35) level = 'med';
-            return profiles[category][level];
-        }
-        
-        function getArchetype(scores) {
-            const manipulation = scores.manipulation.percent;
-            const parentification = scores.parentification.percent;
-            const favoritisme = scores.favoritisme.percent;
-            const culpabilite = scores.culpabilite.percent;
-            const fratrie = scores.fratrie.percent;
-            
-            if (parentification >= 60 && culpabilite >= 60) return {key: 'enfant_parent', name: archetypes.enfant_parent.name, desc: "Tu as appris à prendre soin des autres avant de t'occuper de toi. Dès l'enfance, tu as porté le poids émotionnel d'un parent. Tu es celle qui écoute, qui console, qui arrange. Aujourd'hui encore, tu culpabilises d'avoir besoin de quelque chose pour toi. Ce rôle a peut-être été utile pour survivre, mais il t'épuise."};
-            if (parentification >= 60) return {key: 'enfant_sauveur', name: archetypes.enfant_sauveur.name, desc: "Tu as développé des réflexes d'hyper-vigilance. Tu lis dans les silences, tu anticipes les colères, tu mets tes propres besoins de côté pour éviter une catastrophe. Tu es devenue experte à 'arranger les choses'. Mais cette expertise te coûte beaucoup d'énergie. Personne ne t'a jamais demandé si tu allais bien."};
-            if (culpabilite >= 65) return {key: 'enfant_oublie', name: archetypes.enfant_oublie.name, desc: "Tu portes la culpabilité d'exister. Peut-être qu'un parent a souffert et tu as appris que ta joie était une forme d'ingratitude. Peut-être que tes besoins ont toujours été secondaires. Tu t'es fait petite. Et maintenant, tu culpabilises de demander, de prendre, d'être heureuse. Ce que tu ressens aujourd'hui : c'est de l'héritage."};
-            if (manipulation >= 60 && fratrie >= 60) return {key: 'bouc_emissaire', name: archetypes.bouc_emissaire.name, desc: "Tu as reçu une part disproportionnée de blâme et de critique. Peut-être qu'un parent avait besoin d'un ennemi interne. Peut-être que la fratrie t'a mise en porte-à-faux. Tu portes les tensions de la famille comme si elles étaient ta faute. Tu expliques, tu justifies, tu t'excuses. Mais rien n'y fait jamais."};
-            if (favoritisme >= 60 && fratrie >= 50) return {key: 'enfant_prefere', name: archetypes.enfant_prefere.name, desc: "Tu as grandi dans la comparaison. Soit tu étais la préférée et tu portes le poids de la culpabilité. Soit tu ne l'étais pas et tu as appris que tu n'étais jamais assez. Dans les deux cas, cette dynamique a fragmenté ta fratrie. Personne ne s'en est sorti indemne. Pas même toi."};
-            if (favoritisme >= 50) return {key: 'enfant_invisible', name: archetypes.enfant_invisible.name, desc: "Tu t'es fait petite pour ne pas prendre de place. Peut-être qu'on t'oubliait. Peut-être que tu n'avais pas d'importance. Tu as appris à être autonome très tôt, à ne pas demander, à te débrouiller seule. Même maintenant, tu as du mal à croire que quelqu'un pourrait te voir vraiment."};
-            if (fratrie >= 60) return {key: 'enfant_mediateur', name: archetypes.enfant_mediateur.name, desc: "Tu es celle qui essaie de résoudre les conflits, qui joue les intermédiaires, qui cherche des solutions. Tu ne peux pas supporter l'atmosphère lourde. Alors tu travailles sans relâche pour arranger les choses entre les autres. Mais personne n'a jamais pensé à arranger les choses pour toi."};
-            
-            return {key: null, name: "Tu t'es adaptée pour survivre", desc: "Tes dynamiques familiales sont complexes et multi-facettes. Il n'y a pas une seule histoire ici. Ce que tu dois savoir : rien de ce que tu es aujourd'hui n'est de ta faute."};
-        }
-        
-        function getSynthesis(scores) {
-            const avg = Math.round((scores.manipulation.percent + scores.parentification.percent + scores.favoritisme.percent + scores.culpabilite.percent + scores.fratrie.percent) / 5);
-            if (avg < 25) return "Ton test ne montre pas de signaux d'alerte majeurs. Continue à protéger tes limites et à écouter ce qui te fait du bien.";
-            if (avg < 45) return "Ce test montre simplement où les blessures sont les plus sensibles. Tu n'es pas condamnée à reproduire ce que tu as appris.";
-            if (avg < 60) return "Tu as appris à prendre beaucoup de place pour les autres et très peu pour toi. Tu as développé des réflexes de culpabilité et une tendance à t'oublier. Ce fonctionnement a probablement été utile pour survivre dans ton environnement familial, mais il continue aujourd'hui à t'épuiser. Rien de tout cela ne fait de toi quelqu'un d'égoïste ou d'ingrat. Tu as simplement appris à vivre ainsi.";
-            return "Tu portes le poids de dynamiques familiales qui t'ont formée. Ce poids ne t'appartient pas. La première chose à savoir : tu n'as rien fait pour mériter ça. La deuxième chose : tu n'es plus obligée de le porter seule. Ça prendra du temps et du soutien, mais c'est possible.";
-        }
-        
-        function renderLibrary() {
-            let html = '<h2 style="font-size: 20px; font-weight: 600; margin-bottom: 24px; color: #8b7355;">Bibliothèque</h2>';
-            html += '<p style="color: #5f5e5a; margin-bottom: 30px; font-size: 14px; line-height: 1.6;">Bibliothèque RED FLAG Famille. Tous les contenus visibles sont inclus dans ton abonnement. De nouveaux contenus sont ajoutés régulièrement.</p>';
-            html += '<div class="library-grid">';
-            
-            Object.keys(archetypes).forEach(key => {
-                const archetype = archetypes[key];
-                html += `<div class="archetype-card" onclick="viewArchetype('${key}')">
-                    <h3>${archetype.name}</h3>
-                    <div class="article-list">`;
-                archetype.articles.forEach((article, idx) => {
-                    html += `<div class="article-item" onclick="event.stopPropagation(); viewArticle('${key}', ${idx})">📄 ${article.title}</div>`;
-                });
-                html += `</div></div>`;
-            });
-            
-            html += '</div>';
-            document.getElementById('libraryView').innerHTML = html;
-        }
-        
-        function viewArchetype(key) {
-            currentArchetype = key;
-            let html = `<div style="margin-bottom: 24px;">
-                <button class="article-back" onclick="backToLibrary()">← Retour à la Bibliothèque</button>
-            </div>
-            <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 24px; color: #8b7355;">${archetypes[key].name}</h2>
-            <div class="article-list">`;
-            
-            archetypes[key].articles.forEach((article, idx) => {
-                html += `<div class="article-item" onclick="viewArticle('${key}', ${idx})" style="cursor: pointer; margin-bottom: 12px;">📄 ${article.title}</div>`;
-            });
-            
-            html += '</div>';
-            document.getElementById('libraryView').innerHTML = html;
-        }
-        
-        function viewArticle(archeKey, articleIdx) {
-            const article = archetypes[archeKey].articles[articleIdx];
-            const contentKey = `${archeKey}_${articleIdx}`;
-            const fullContent = articleContents[contentKey];
-            
-            let html = `<div class="article-header">
-                <button class="article-back" onclick="viewArchetype('${archeKey}')">← Retour</button>
-            </div>
-            <h1 class="article-title">${article.title}</h1>
-            <div class="article-intro">${article.intro}</div>`;
-            
-            if (fullContent) {
-                html += `<div style="font-size: 14px; line-height: 1.8; color: #5f5e5a; white-space: pre-wrap; word-wrap: break-word;">${fullContent}</div>`;
-            } else {
-                html += `<div style="font-size: 14px; line-height: 1.8; color: #5f5e5a; white-space: pre-wrap; word-wrap: break-word;">Une erreur est survenue. <button class="article-back" onclick="backToLibrary()" style="margin-left: 8px;">Retour à la bibliothèque</button></div>`;
-            }
-            
-            html += `<div class="button-group">
-                <button class="btn btn-secondary" onclick="viewArchetype('${archeKey}')">Retour à ${archetypes[archeKey].name}</button>
-            </div>`;
-            
-            document.getElementById('libraryView').innerHTML = html;
-        }
-        
-        function backToLibrary() {
-            renderLibrary();
-        }
-        
-        function calculateResults() {
-            const totalQuestions = questions.reduce((sum, s) => sum + s.questions.length, 0);
-            const validQuestionIds = questions.flatMap(section => section.questions.map((_, idx) => `${section.id}_${idx}`));
-            const answered = validQuestionIds.filter(qId => Object.prototype.hasOwnProperty.call(answers, qId)).length;
-            if (answered !== totalQuestions) {
-                alert('Réponds à toutes les questions avant de voir tes résultats.');
-                return;
-            }
-
-            const scores = calculateScores();
-            const sortedAreas = Object.entries(scores).sort((a, b) => b[1].percent - a[1].percent);
-            const criticalAreas = sortedAreas.filter(([_, s]) => s.percent >= 50);
-            const mainArea = sortedAreas[0];
-            const secondArea = sortedAreas[1];
-            const archetype = getArchetype(scores);
-            const synthesis = getSynthesis(scores);
-
-            const categoryLabels = {
-                manipulation: 'Manipulation parentale',
-                parentification: 'Parentification et rôle inversé',
-                favoritisme: 'Favoritisme familial',
-                culpabilite: 'Culpabilité familiale',
-                fratrie: 'Fratrie et alliances toxiques'
-            };
-
-            const mainReading = {
-                manipulation: "Ton résultat principal montre une forte sensibilité aux mécanismes de contrôle, de reproche ou de pression familiale. Quand cette zone monte, ce n'est pas juste une histoire de caractère. C'est souvent le signe que tu as appris à surveiller ce que tu dis, ce que tu fais, et jusqu'où tu peux exister sans déclencher une réaction.",
-                parentification: "Ton résultat principal montre que tu as probablement pris une place trop grande dans la gestion émotionnelle des autres. Tu as pu devenir celle qui écoute, qui comprend, qui calme, qui prévoit. Le problème, c'est que ce rôle finit par te voler ton repos et ton droit d'être simplement toi.",
-                favoritisme: "Ton résultat principal pointe la comparaison, la place dans la fratrie ou la sensation de ne jamais recevoir exactement la même chose que les autres. Quand cette zone ressort, ce n'est pas une jalousie idiote. C'est souvent une vieille impression d'injustice, de compétition ou de place à mériter.",
-                culpabilite: "Ton résultat principal montre que la culpabilité familiale pèse lourd. Tu peux avoir l'impression de devoir rembourser, réparer, compenser ou ne pas trop être heureuse. Cette culpabilité n'est pas une preuve d'amour. C'est souvent une dette émotionnelle qu'on t'a laissée dans les bras sans te demander ton avis.",
-                fratrie: "Ton résultat principal montre que la fratrie ou les alliances familiales ont laissé une trace. Rivalités, comparaison, rôle imposé, conflits silencieux, place mal distribuée. Cette zone parle rarement d'un seul événement. Elle parle d'une ambiance familiale qui a organisé les places sans demander l'accord de personne."
-            };
-
-            let html = '<h2 style="font-size: 20px; font-weight: 600; margin-bottom: 24px; color: #8b7355;">Tes résultats</h2>';
-
-            html += `<div class="archetype-box" style="text-align:left;">
-                <div class="archetype-title" style="text-align:center;">Ton rôle dominant : ${archetype.name}</div>
-                <div class="archetype-description" style="text-align:center; margin-bottom:18px;">${archetype.desc}</div>
-                <div style="background:#fffaf2; border:1px solid #e0dcd3; border-radius:10px; padding:16px; color:#5f5e5a; font-size:14px; line-height:1.7;">
-                    <strong style="color:#8b7355;">Ce que ton test indique clairement :</strong><br>
-                    ${mainReading[mainArea[0]]}
-                </div>
-            </div>`;
-
-            html += `<div class="synthesis-box"><strong>Lecture globale :</strong><br>${synthesis}</div>`;
-
-            html += `<h3 style="font-size: 16px; font-weight: 600; margin: 30px 0 16px; color: #8b7355;">Tes deux zones les plus marquées</h3>
-                <div class="profile-badge"><strong>1. ${categoryLabels[mainArea[0]]} — ${mainArea[1].percent}%</strong>${getProfileName(mainArea[0], mainArea[1].percent)}</div>
-                <div class="profile-badge"><strong>2. ${categoryLabels[secondArea[0]]} — ${secondArea[1].percent}%</strong>${getProfileName(secondArea[0], secondArea[1].percent)}</div>`;
-
-            html += '<h3 style="font-size: 16px; font-weight: 600; margin: 30px 0 16px; color: #8b7355;">Détail de tes scores</h3>';
-            html += '<div style="margin-bottom: 30px;">';
-            Object.entries(scores).forEach(([category, score]) => {
-                const color = getScoreColor(score.percent);
-                const label = categoryLabels[category];
-                const profileName = getProfileName(category, score.percent);
-                html += `<div class="score-card" style="--bg: ${color.bg}; --text: ${color.text}; --border: ${color.border}; --fill: ${color.fill};"><div class="score-label">${label}</div><div class="score-number">${score.percent}%</div><div class="score-bar"><div class="score-bar-fill" style="width: ${score.percent}%"></div></div><div style="margin-top: 8px; font-size: 12px; color: var(--text);">${profileName}</div></div>`;
-            });
-            html += '</div>';
-
-            if (criticalAreas.length > 0) {
-                html += '<h3 style="font-size: 16px; font-weight: 600; margin: 30px 0 16px; color: #8b7355;">🚩 Points à regarder en priorité</h3>';
-                const recommendations = {
-                    'manipulation': 'Certaines attitudes semblent t\'avoir habituée à culpabiliser ou à te taire. Il est temps de remettre une limite là où tu n\'en avais plus.',
-                    'parentification': 'Tu as peut-être appris très tôt à t\'occuper des autres avant de t\'occuper de toi. Ce rôle continue parfois à l\'âge adulte.',
-                    'favoritisme': 'Grandir dans les comparaisons laisse souvent l\'impression de ne jamais être assez. Ce n\'est pas à toi de gagner une place qui aurait dû être donnée naturellement.',
-                    'culpabilite': 'Tu portes peut-être des responsabilités qui ne devraient pas reposer sur toi.',
-                    'fratrie': 'La fratrie semble prise dans des tensions ou des alliances qui empêchent une relation simple et saine.'
-                };
-                criticalAreas.forEach(([category, score]) => {
-                    html += `<div class="profile-badge"><strong>⚠️ ${categoryLabels[category]}</strong>${recommendations[category]}</div>`;
-                });
-            } else {
-                html += `<div class="profile-badge"><strong>Résultat global apaisé</strong>Aucune zone ne dépasse 50 %. Cela ne veut pas dire que tout est parfait. Cela veut dire que le test ne montre pas de signal familial dominant très marqué aujourd'hui.</div>`;
-            }
-
-            html += `<h3 style="font-size: 16px; font-weight: 600; margin: 30px 0 16px; color: #8b7355;">Ce que tu peux faire maintenant</h3>
-                    <div class="scenario immediate">
-                        <div class="scenario-title">🔴 Cette semaine</div>
-                        <div class="scenario-text">
-                            <strong>Observe ta réaction automatique :</strong> quand tu te sens coupable, obligée de répondre, obligée d'expliquer ou obligée de réparer, note la situation exacte. Pas un roman. Juste : qui, quoi, où, quelle sensation dans le corps.<br><br>
-                            <strong>Pose une limite simple :</strong> choisis une seule demande que tu refuses ou que tu repousses. Exemple : "Je ne peux pas être disponible ce jour-là." Pas besoin de t'excuser pendant trois heures. Les limites ne sont pas des dissertations.
-                        </div>
-                    </div>
-                    <div class="scenario medium">
-                        <div class="scenario-title">🟠 Pendant 7 jours</div>
-                        <div class="scenario-text">
-                            <strong>Repère le rôle qui revient :</strong> sauveuse, invisible, médiatrice, coupable, préférée, bouc émissaire, enfant parent. Le but n'est pas de coller une étiquette sur ton front, déjà que la vie s'en charge assez mal. Le but est de voir quand ce rôle reprend le volant.<br><br>
-                            <strong>Écris la phrase qui te libère :</strong> "Ce n'est pas à moi de porter ça." Relis-la quand tu sens que tu repars dans le vieux réflexe familial.
-                        </div>
-                    </div>
-                    <div class="scenario long">
-                        <div class="scenario-title">🟢 Pour aller plus loin sans te raconter d'histoires</div>
-                        <div class="scenario-text">
-                            <strong>Va lire l'article de ton archétype :</strong> il reprend ton rôle dominant en profondeur, avec les scènes de vie, les conséquences à l'âge adulte et les mécanismes familiaux qui se répètent.<br><br>
-                            <strong>Si le résultat te remue :</strong> ne prends pas une grande décision familiale à chaud. Lis, digère, observe. Ensuite seulement, tu poses des limites plus nettes.
-                        </div>
-                    </div>
-                    <div class="cta-box">
-                        <h3>Tu veux aller plus loin ?</h3>
-                        <p>Ce test te donne une première lecture. La bibliothèque te permet ensuite de comprendre ton rôle familial en profondeur. Si tu veux une analyse personnalisée de ton histoire, de tes schémas et de ce que ton corps raconte, tu peux réserver une consultation.</p>
-                        <a href="https://www.resonanceintuitive.com/consultations" class="cta-button" target="_blank">Prendre rendez-vous</a>
-                    </div>
-                    <div class="button-group">
-                        <button class="btn btn-primary" onclick="switchTab('library')">Lire mon article dans la bibliothèque</button>
-                        <button class="btn btn-secondary" onclick="resetAssessment()">Effacer mes réponses</button>
-                    </div>`;
-
-            document.getElementById('resultsContainer').innerHTML = html;
-            switchTab('results');
-        }
-
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
-            document.getElementById(tab).classList.add('active');
-            const activeButton = document.querySelector(`.tab-button[onclick="switchTab('${tab}')"]`);
-            if (activeButton) activeButton.classList.add('active');
-        }
-        
-        function clearAssessment() {
-            if (confirm('Effacer toutes tes réponses ?')) {
-                answers = {};
-                localStorage.removeItem('redFlagFamilleAnswers');
-                renderQuestions();
-                switchTab('assessment');
-            }
-        }
-
-        function resetAssessment() {
-            clearAssessment();
-        }
-        
-        initializeQuestions();
-    </script>
+<main class="page">
+<div class="container">
+<section class="hero">
+<h1>RED FLAG</h1>
+<p class="subtitle">Analyse les incohérences, les comportements de pression, les promesses trop rapides, les signaux de manipulation, d'emprise, de double vie, d'arnaque affective, de relation cachée, de tromperie probable, de violence psychologique ou de dépendance toxique. Cet outil fonctionne pour toutes les relations : hétérosexuelles, homosexuelles, lesbiennes, bisexuelles, trans, non-binaires ou autres.</p>
+<div class="warning">Cet outil ne remplace pas un avis juridique, psychologique, médical ou une enquête professionnelle. Il sert à repérer les signaux dangereux que l'on minimise trop souvent au début. En cas de danger immédiat, contacte les services compétents.</div>
+<div class="brandTop"><a href="https://payhip.com/lesvoixducorps" target="_blank">https://payhip.com/lesvoixducorps</a></div>
+<div class="priceBox">Abonnement mensuel unique : 14,90 euros</div>
+</section>
+
+<section class="grid">
+<div class="card">
+<label for="profile">Profil ou situation</label>
+<textarea id="profile" rows="5" placeholder="Exemple : rencontré sur une application, très intense dès le début, refuse les appels vidéo, dit être souvent indisponible, veut garder la relation secrète..."></textarea>
+<label for="conversation" style="margin-top:16px;">Conversation copiée</label>
+<textarea id="conversation" rows="12" placeholder="Colle ici les messages importants, sans données sensibles si possible."></textarea>
+</div>
+
+<div class="card">
+<label>Comportements observés</label>
+<div class="checks" id="checks"></div>
+<button onclick="analyze()">Analyser les red flags</button>
+<button class="resetBtn" onclick="resetForm()">Réinitialiser</button>
+</div>
+</section>
+
+<section class="result" id="result">
+<div class="scoreLine">
+<div class="score" id="score">0%</div>
+<div>
+<div class="level" id="level">Analyse prête</div>
+<div id="summary">Entre les éléments puis lance l'analyse.</div>
+</div>
+</div>
+<button class="resetBtn resetResultTop" onclick="resetForm()">Réinitialiser et refaire un test</button>
+<h3>Signaux détectés</h3>
+<div id="badges"></div>
+<h3>Analyse détaillée des risques</h3>
+<div class="riskGrid" id="riskDetails"></div>
+<h3>Verdict REDFLAG</h3>
+<div class="verdictBox" id="verdict">Analyse en attente.</div>
+<h3>Lecture claire</h3>
+<p id="reading"></p>
+<h3>Ce que tu dois faire maintenant</h3>
+<ul class="list" id="actions"></ul>
+<button class="resetBtn resetResultBottom" onclick="resetForm()">Réinitialiser et refaire un test</button>
+<p class="footerNote">Conseil de sécurité : ne partage jamais d'argent, de documents, de codes, de photos intimes ou d'informations bancaires avec une personne dont l'identité, la cohérence et les intentions ne sont pas vérifiées.</p>
+<div class="siteBox">
+Abonnement mensuel unique : 14,90 euros<br>
+<a href="https://payhip.com/lesvoixducorps" target="_blank">https://payhip.com/lesvoixducorps</a>
+<div class="mini">Sandrine Padoly Résonance Intuitive</div>
+</div>
+</section>
+</div>
+</main>
+
+<script>
+const checks=[
+["Promesses très rapides","Promesses très rapides, amour intense, projection immédiate",18,18,"lovebombing"],
+["Demande d'argent","Demande d'argent, aide financière, urgence étrange",55,62,"money"],
+["Refus vidéo","Refuse les appels vidéo ou trouve toujours une excuse",34,42,"identity"],
+["Disparitions","Disparaît puis revient comme si de rien n'était",24,30,"absence"],
+["Culpabilisation","Te fait culpabiliser quand tu poses une question normale",32,38,"guilt"],
+["Contradictions","Donne des versions différentes de sa vie",36,42,"lies"],
+["Isolement","Critique tes proches ou veut t'isoler émotionnellement",44,50,"control"],
+["Pression sexuelle","Met une pression sexuelle ou intime trop vite",48,55,"sexual"],
+["Futur flou","Parle beaucoup du futur mais évite le concret",21,26,"future"],
+["Profil flou","Photos floues, peu d'informations, présence en ligne incohérente",25,32,"identity"],
+["Victime permanente","Tous ses ex sont folles, fous, toxiques, menteurs ou responsables de tout",26,34,"victim"],
+["Inaccessible","Toujours une excuse pour ne jamais être disponible réellement",30,38,"absence"],
+["Double vie possible","Son emploi du temps est impossible à comprendre clairement",50,58,"doublelife"],
+["Messages supprimés","Supprime des messages ou modifie régulièrement ses versions",42,50,"lies"],
+["Flatterie excessive","Te met sur un piédestal alors que la personne te connaît à peine",20,26,"lovebombing"],
+["Refus d'être vu en public","Refuse d'être vu avec toi en public ou évite les lieux connus",58,65,"doublelife"],
+["Relation secrète","Demande de cacher la relation à son entourage",54,62,"secret"],
+["Retour calculé","Revient toujours quand tu commences à t'éloigner",32,40,"control"],
+["Jalousie précoce","Devient jaloux ou jalouse très rapidement sans raison valable",34,42,"control"],
+["Surveillance","Veut connaître tes déplacements, tes horaires ou avec qui tu parles",45,52,"control"],
+["Mensonge vérifié","Tu as déjà vérifié un mensonge concret",60,72,"lies"],
+["Refus de preuve","Refuse toute vérification simple de ce que la personne affirme",40,50,"identity"],
+["Engagé ailleurs","Indices laissant penser à une autre relation cachée",62,74,"doublelife"],
+["Gaslighting","Te fait douter de ta mémoire, de ce que tu as vu ou entendu",48,58,"guilt"],
+["Menaces","Menaces, intimidation, peur de sa réaction ou chantage",70,82,"danger"],
+["Documents demandés","Demande papiers, RIB, codes, justificatifs ou infos bancaires",62,75,"documents"],
+["Photos intimes","Demande des photos intimes ou insiste malgré ton malaise",55,68,"sexual"],
+["Colère aux limites","Réagit mal quand tu dis non ou quand tu mets une limite",42,52,"control"],
+["Test de loyauté","Te demande de prouver ton amour ou ta confiance",34,42,"guilt"],
+["Inversion de faute","Retourne toujours la situation pour que tu sois coupable",38,46,"guilt"],
+["Relation LGBTQ+ cachée","Te garde dans une relation cachée sous prétexte que personne ne doit savoir",46,58,"secret"],
+["Menace d'outing","Menace de révéler ton orientation, ton identité ou votre relation",68,80,"danger"],
+["Honte ou non-assumation","Te fait sentir honteuse, honteux ou pas présentable",42,52,"identitypressure"],
+["Relation uniquement secrète","Veut uniquement te voir en cachette, jamais dans une vraie place claire",38,48,"secret"],
+["Fétichisation","Te réduit à ton orientation, ton corps, ton genre ou ton identité",36,46,"identitypressure"],
+["Pression identité","Te force à te définir, à te justifier ou à prouver qui tu es",38,48,"identitypressure"],
+["Double vie LGBTQ+","Dit vouloir une relation mais refuse toute existence réelle de votre lien",50,60,"doublelife"],
+["Manipulation communautaire","Utilise ton isolement, ta peur du jugement ou ton besoin d'être compris contre toi",44,54,"control"],
+["Investissement douteux","Te parle d'investissement, crypto, placement ou rendement alors que la relation est récente",58,70,"money"],
+["Urgence familiale","Utilise une maladie, un accident ou une urgence familiale pour demander de l'aide",52,65,"money"],
+["Compte ou accès demandé","Demande l'accès à ton téléphone, tes réseaux, tes mails ou tes comptes",48,60,"documents"],
+["Punition par silence","Te punit par le silence quand tu ne fais pas ce qu'il ou elle veut",46,56,"control"],
+["Limites forcées","Insiste après un non clair",44,55,"control"],
+["Trop beau trop vite","Te promet maison, mariage, voyage, famille ou vie commune sans actes concrets",40,50,"future"],
+["Téléphone caché","Retourne toujours son téléphone écran contre la table ou cache l'écran dès que tu approches",34,42,"infidelity"],
+["Disparition week-end","Disparaît régulièrement les week-ends ou certains soirs sans explication claire",42,52,"infidelity"],
+["Deux téléphones","Utilise plusieurs téléphones ou plusieurs comptes sans explication cohérente",55,65,"doublelife"],
+["Notifications masquées","Cache ses notifications, coupe son écran ou efface vite les messages",44,54,"infidelity"],
+["Refus famille","Refuse de te présenter à sa famille après plusieurs mois",48,58,"infidelity"],
+["Refus amis","Refuse de te présenter à ses amis ou évite tout cercle social réel",42,52,"infidelity"],
+["Photos ensemble refusées","Refuse les photos de couple ou les supprime rapidement",46,56,"infidelity"],
+["Réseaux cachés","Cache ses réseaux sociaux ou refuse toute trace visible de votre lien",38,48,"infidelity"],
+["Statut flou","Reste flou sur célibataire, séparé, divorcé ou déjà engagé",58,68,"doublelife"],
+["Mensonge âge","Tu as découvert un mensonge sur son âge",58,68,"lies"],
+["Mensonge travail","Tu as découvert un mensonge sur son travail",62,72,"lies"],
+["Mensonge revenus","Tu as découvert un mensonge sur ses revenus ou sa situation financière",58,68,"lies"],
+["Mensonge domicile","Tu as découvert un mensonge sur son lieu de vie",58,68,"lies"],
+["Mensonge enfants","Tu as découvert un mensonge sur ses enfants ou sa situation familiale",62,74,"lies"],
+["Faux profil possible","Photos trop parfaites, identité difficile à vérifier, profil incohérent",62,76,"identity"],
+["Critiques constantes","Critique régulièrement ton apparence, tes choix ou ta façon d'être",48,58,"abuse"],
+["Moqueries déguisées","Te rabaisse sous couvert d'humour et dit que tu ne comprends pas la plaisanterie",52,62,"abuse"],
+["Rabaissement public","Te corrige, t'humilie ou te diminue devant les autres",58,70,"abuse"],
+["Comparaison ex","Te compare régulièrement à son ex ou utilise son ex pour te faire réagir",42,52,"abuse"],
+["Colères excessives","Réagit de manière disproportionnée à une question simple",55,65,"abuse"],
+["Menaces de rupture","Menace souvent de partir pour obtenir ce qu'il ou elle veut",52,62,"abuse"],
+["Addiction alcool","Présente des signes d'alcoolisation fréquente ou minimise sa consommation",42,52,"addiction"],
+["Addiction jeux","Jeux d'argent, paris sportifs ou dettes qui reviennent souvent",55,65,"addiction"],
+["Addiction drogues","Consommation suspectée ou connue, avec mensonges ou changements d'humeur",62,72,"addiction"],
+["Dépenses incontrôlées","Achats compulsifs, dettes ou demandes d'aide répétées",48,58,"addiction"],
+["Demande mariage rapide","Parle mariage très rapidement sans vraie stabilité",42,52,"lovebombing"],
+["Demande enfant rapide","Parle enfant, grossesse ou projet familial très vite",42,52,"lovebombing"],
+["Déménagement rapide","Veut vivre ensemble très vite ou te pousser à quitter ton cadre",42,52,"lovebombing"],
+["Ne parle que de lui","Tout tourne autour de lui ou d'elle, tes besoins passent après",34,44,"narcissism"],
+["Aucune remise en question","N'admet jamais ses erreurs et retourne toujours la faute",48,58,"narcissism"],
+["Besoin d'admiration","Recherche constamment l'admiration, la validation ou le contrôle de l'image",42,52,"narcissism"],
+["Manque d'empathie","Ton mal-être ne l'intéresse que si cela le concerne",48,58,"narcissism"],
+["Jalousie provoquée","Crée volontairement de la jalousie pour te rendre réactive",52,62,"control"],
+["Harcèlement messages","Envoie une quantité excessive de messages ou exige une réponse immédiate",48,58,"control"],
+["Surveillance réseaux","Surveille tes likes, tes abonnés, tes commentaires ou tes connexions",46,56,"control"],
+["Accélération forcée","Pousse la relation plus vite que ton rythme réel",38,48,"control"]
+];
+
+const riskyWords=[
+["argent",35,45,"Argent","money"],["virement",45,58,"Virement","money"],["urgence",26,34,"Urgence","money"],["western union",65,78,"Transfert d'argent","money"],["transfert",38,48,"Transfert","money"],["crypto",55,68,"Crypto","money"],["bitcoin",52,65,"Crypto","money"],["investissement",52,65,"Investissement douteux","money"],["rendement",45,58,"Rendement suspect","money"],["carte cadeau",60,72,"Carte cadeau","money"],["code",36,48,"Code demandé","documents"],["rib",60,74,"RIB","documents"],["iban",60,74,"IBAN","documents"],["passeport",50,62,"Document d'identité","documents"],["carte d'identité",50,62,"Document d'identité","documents"],["secret",30,40,"Secret","secret"],["personne ne doit savoir",50,62,"Secret imposé","secret"],["ne dis rien",42,52,"Silence imposé","secret"],["je t'aime",16,24,"Intensité affective","lovebombing"],["âme sœur",26,34,"Projection rapide","lovebombing"],["fais-moi confiance",34,44,"Confiance forcée","guilt"],["tu me blesses",26,34,"Culpabilisation","guilt"],["si tu m'aimais",48,60,"Chantage affectif","guilt"],["photo intime",60,72,"Pression intime","sexual"],["nude",58,70,"Photo intime","sexual"],["j'ai besoin de toi",24,32,"Dépendance créée","guilt"],["mon ex est folle",28,36,"Ex dénigrée","victim"],["mon ex est fou",28,36,"Ex dénigré","victim"],["tu es différente",18,26,"Flatterie rapide","lovebombing"],["tu es différent",18,26,"Flatterie rapide","lovebombing"],["tu dois me prouver",42,52,"Test de loyauté","guilt"],["supprime",34,44,"Effacement","lies"],["bloque",28,36,"Contrôle","control"],["je vais me suicider",70,82,"Chantage grave","danger"],["tu vas le regretter",70,82,"Menace","danger"],["je sais où tu habites",75,88,"Intimidation","danger"],["je vais tout dire",62,75,"Chantage","danger"],["outing",70,82,"Menace d'outing","danger"],["personne ne doit savoir pour nous",55,68,"Relation cachée imposée","secret"],["reste discret",34,44,"Discrétion imposée","secret"],["reste discrète",34,44,"Discrétion imposée","secret"],["je ne peux pas assumer",42,54,"Non-assumation","identitypressure"],["tu dois comprendre ma situation",30,40,"Flou justifié","guilt"],["ne parle pas de nous",45,56,"Secret relationnel","secret"],["tu es juste une expérience",55,66,"Fétichisation","identitypressure"],["je n’ai jamais fait ça avec quelqu’un comme toi",36,46,"Fétichisation possible","identitypressure"],["je n'ai jamais fait ça avec quelqu'un comme toi",36,46,"Fétichisation possible","identitypressure"],["si les gens apprennent",50,62,"Peur utilisée","secret"],["tu fais trop gay",48,60,"Humiliation identitaire","identitypressure"],["tu fais trop lesbienne",48,60,"Humiliation identitaire","identitypressure"],["ton genre",28,36,"Identité utilisée","identitypressure"],["ton orientation",28,36,"Orientation utilisée","identitypressure"],["je ne suis pas prêt à le dire",34,44,"Relation gardée dans le flou","secret"],["je ne suis pas prête à le dire",34,44,"Relation gardée dans le flou","secret"],["je ne peux pas t'afficher",38,50,"Relation non assumée","secret"],
+["week-end",28,38,"Disparition week-end","infidelity"],["notification",30,40,"Notifications cachées","infidelity"],["deux téléphones",55,65,"Deux téléphones","doublelife"],["ma femme",62,75,"Relation existante","doublelife"],["mon mari",62,75,"Relation existante","doublelife"],["séparé mais",45,58,"Séparation floue","doublelife"],["divorce en cours",38,48,"Situation conjugale floue","doublelife"],["pas maintenant",18,26,"Évitement","absence"],["plus tard",14,22,"Report permanent","absence"],["tu exagères",32,42,"Minimisation","guilt"],["tu es folle",55,68,"Humiliation","abuse"],["tu es fou",55,68,"Humiliation","abuse"],["c'était une blague",35,45,"Moquerie déguisée","abuse"],["tu prends tout mal",38,48,"Inversion émotionnelle","abuse"],["tais-toi",52,65,"Violence verbale","abuse"],["alcool",28,38,"Alcool","addiction"],["bourré",36,46,"Alcoolisation","addiction"],["pari sportif",46,58,"Paris sportifs","addiction"],["casino",45,58,"Jeux d'argent","addiction"],["dette",40,50,"Dette","addiction"],["cocaine",60,72,"Drogue","addiction"],["cocaïne",60,72,"Drogue","addiction"],["joint",28,38,"Consommation","addiction"],["je suis comme ça",28,38,"Refus de remise en question","narcissism"],["c'est moi comme ça",28,38,"Refus de remise en question","narcissism"],["tu devrais être contente",34,44,"Besoin d'admiration","narcissism"],["après tout ce que je fais",38,48,"Dette affective","narcissism"],["tu me dois",46,58,"Dette affective","control"],["réponds",20,30,"Pression réponse","control"],["pourquoi tu réponds pas",34,44,"Contrôle messages","control"],["avec qui tu es",38,48,"Surveillance","control"],["envoie ta localisation",55,68,"Localisation exigée","control"],["mot de passe",55,68,"Mot de passe demandé","documents"],["compte bancaire",65,78,"Compte bancaire","documents"],["paypal",42,54,"Paiement demandé","money"],["recharge",48,60,"Recharge demandée","money"],["coupon",48,60,"Coupon demandé","money"]
+];
+
+const categoryData={
+money:{reading:"Le danger principal ici, c'est l'argent. Dès qu'une relation récente commence à tourner autour d'un dépannage, d'un virement, d'une urgence ou d'un investissement, on ne parle plus d'amour, on parle de prise de risque. Une personne sincère ne transforme pas ton attachement en solution bancaire.",actions:["Tu ne verses rien, même si l'histoire est triste.","Tu demandes une preuve extérieure vérifiable, pas une capture floue.","Tu refuses les virements, cartes cadeaux, crypto et remboursements arrangés.","Tu gardes les messages et tu ne négocies pas."]},
+documents:{reading:"Le signal le plus grave ici concerne tes documents, tes codes ou tes accès. Ce n'est pas une preuve d'amour, c'est une porte ouverte à l'usurpation, au chantage ou au contrôle. Une personne fiable ne demande pas tes papiers pour construire une relation.",actions:["Tu ne donnes aucun document, aucun RIB, aucun code.","Tu changes tes mots de passe si tu as déjà partagé quelque chose.","Tu actives la double authentification sur tes comptes.","Tu conserves les preuves des demandes."]},
+danger:{reading:"Là, on sort du simple red flag. Il y a une pression, une menace ou un chantage. Tu ne dois pas chercher à raisonner quelqu'un qui utilise la peur. Tu dois te protéger, garder les preuves et sortir de l'échange sans te mettre davantage en danger.",actions:["Tu ne préviens pas la personne si tu sens un risque.","Tu fais des captures immédiatement.","Tu informes une personne fiable.","Si tu te sens en danger, tu contactes les services compétents."]},
+doublelife:{reading:"Le problème central, c'est la place réelle que cette personne te donne. Quand les horaires sont flous, les sorties impossibles, les preuves refusées et la relation cachée, il faut arrêter de combler les trous avec de l'espoir. Une relation saine n'a pas besoin d'être vécue comme une enquête.",actions:["Tu demandes une clarification concrète, pas un roman.","Tu observes si les actes suivent dans les jours qui viennent.","Tu refuses les rendez-vous uniquement cachés ou arrangés à la dernière minute.","Si rien ne devient clair, tu coupes court."]},
+control:{reading:"Ici, la personne cherche à prendre de la place dans ta liberté. Surveillance, jalousie rapide, limites mal acceptées, isolement, silence punitif : ce n'est pas de l'amour intense, c'est du contrôle qui commence.",actions:["Tu poses une limite courte et non négociable.","Tu ne justifies pas tes déplacements, tes amis ou tes horaires.","Tu reprends contact avec tes proches si la personne t'a isolée ou isolé.","Tu t'éloignes dès que le non n'est pas respecté."]},
+guilt:{reading:"La mécanique dominante ici, c'est la culpabilité. La personne retourne les choses pour que tu te sentes responsable de son malaise, de sa colère ou de ses besoins. Ce n'est pas une discussion, c'est une pression affective.",actions:["Tu arrêtes de te défendre pendant des heures.","Tu réponds court : je ne suis pas responsable de ça.","Tu regardes les faits, pas les reproches.","Tu prends de la distance si chaque limite devient une scène."]},
+secret:{reading:"Le danger ici, c'est le secret imposé. La discrétion peut exister au début, mais quand elle devient une règle, une peur, une pression ou une obligation, tu n'es plus dans une relation libre. Tu es dans une place cachée.",actions:["Tu demandes clairement quelle place réelle la personne te donne.","Tu refuses d'être uniquement disponible en cachette.","Tu ne protèges pas quelqu'un qui t'efface.","Si la relation doit rester invisible, tu reprends ton pouvoir."]},
+sexual:{reading:"Le signal dominant concerne l'intime. Une personne qui insiste, réclame, force, boude ou culpabilise après un refus ne respecte pas ton corps. Le désir ne donne aucun droit sur toi.",actions:["Tu ne cèdes pas pour calmer la personne.","Tu ne partages aucune photo intime.","Tu gardes les preuves si la personne insiste.","Tu bloques si le refus n'est pas respecté."]},
+identitypressure:{reading:"La personne touche à ton identité, ton orientation, ton genre ou ta place. C'est dangereux parce que ça peut créer de la honte, du flou et une dépendance affective. On ne construit pas une relation en rabaissant ce que tu es.",actions:["Tu refuses toute phrase qui te fait honte de toi.","Tu ne te justifies pas sur ton identité ou ton orientation.","Tu cherches une personne extérieure sûre si tu te sens isolée ou isolé.","Tu coupes les échanges si l'identité devient une arme."]},
+identity:{reading:"Le problème principal, c'est l'identité non vérifiée. Refus vidéo, profil flou, preuves évitées, versions imprécises : tu n'as pas assez de concret pour faire confiance. Sans vérification simple, on ne s'attache pas.",actions:["Tu demandes un appel vidéo simple.","Tu vérifies une information concrète.","Tu refuses les explications interminables sans preuve.","Si la personne fuit encore, tu arrêtes l'échange."]},
+lovebombing:{reading:"Ici, le danger vient de l'intensité trop rapide. Trop de mots, trop de promesses, trop de futur alors que les actes ne sont pas encore là. Ce n'est pas forcément de l'amour, c'est parfois une manière de créer une dépendance vite.",actions:["Tu ralentis immédiatement.","Tu ne réponds pas à l'intensité par plus d'intensité.","Tu observes les actes sur plusieurs semaines.","Tu refuses les grandes promesses sans comportement stable."]},
+absence:{reading:"Le signal dominant, c'est l'indisponibilité. Une personne qui disparaît, revient, explique mal et te garde dans l'attente installe une relation déséquilibrée. Tu n'es pas là pour attendre des miettes de présence.",actions:["Tu regardes la régularité, pas les excuses.","Tu ne relances pas dix fois.","Tu poses une limite sur la disponibilité réelle.","Si ça reste flou, tu te retires."]},
+lies:{reading:"Le point central ici, ce sont les mensonges, les suppressions ou les versions qui changent. Une contradiction peut arriver. Plusieurs contradictions, c'est un système. Tu ne dois pas devenir détective dans ta propre relation.",actions:["Tu gardes les captures.","Tu confrontes une fois avec un fait précis.","Tu observes la réaction : clarté ou colère.","Si la personne retourne la faute, tu prends de la distance."]},
+future:{reading:"La personne vend beaucoup de futur, mais le présent ne suit pas. C'est un piège classique : faire rêver pour éviter de prouver. Une relation se juge sur ce qui est fait, pas sur ce qui est promis.",actions:["Tu demandes des actes simples maintenant.","Tu ne construis pas ta vie sur des promesses.","Tu notes ce qui est dit et ce qui est réellement fait.","Si le futur sert à éviter le concret, tu ralentis net."]},
+victim:{reading:"Quand tous les anciens partenaires sont décrits comme fous, folles, toxiques ou responsables de tout, il faut écouter. Ce discours peut préparer le terrain : demain, la personne racontera peut-être la même chose sur toi.",actions:["Tu ne prends pas son récit pour une preuve.","Tu observes sa capacité à reconnaître sa part.","Tu refuses de devenir sauveuse ou sauveur.","Tu te méfies si tout le monde est coupable sauf elle ou lui."]},
+infidelity:{reading:"Plusieurs éléments évoquent une possible tromperie, une relation parallèle ou une vie privée volontairement fermée. Pris séparément, certains comportements peuvent être anodins. Ensemble, ils dessinent souvent une personne qui cache une partie de sa vie.",actions:["Observe les actes plutôt que les explications.","Ne justifie pas l'injustifiable.","Demande des réponses simples, pas des scénarios compliqués.","Si tout reste flou, considère que c'est déjà une réponse."]},
+abuse:{reading:"Les critiques répétées, humiliations, comparaisons, colères excessives et menaces de rupture ne sont pas des preuves d'amour. Ce sont souvent les premières marches d'une violence psychologique progressive.",actions:["Ne banalise pas les humiliations.","Pose des limites immédiatement.","Parle-en à une personne extérieure fiable.","Éloigne-toi si le comportement persiste."]},
+addiction:{reading:"Les addictions cachées détruisent souvent la confiance, l'argent, le sommeil et la stabilité du couple. Tu n'as pas à devenir sauveuse ou sauveur d'une personne qui ment, nie ou fait payer son déséquilibre aux autres.",actions:["Observe les faits, pas les promesses.","Ne joue pas au sauveur.","Protège ton équilibre financier et émotionnel.","Reste attentive ou attentif aux rechutes, aux dettes et aux mensonges."]},
+narcissism:{reading:"Tout semble tourner autour de cette personne. Tes besoins passent après les siens, tes émotions sont minimisées et la relation devient à sens unique. Ce fonctionnement crée souvent un déséquilibre durable.",actions:["Observe la réciprocité.","Regarde si tes besoins existent réellement dans la relation.","Refuse les relations à sens unique.","Prends du recul avant de t'investir davantage."]}
+};
+
+document.getElementById("checks").innerHTML=checks.map(c=>`<label class="check"><input type="checkbox" value="${c[2]}" data-min="${c[3]}" data-cat="${c[4]}" data-label="${c[0]}"> ${c[1]}</label>`).join("");
+
+function cap(v){return Math.min(100,Math.max(0,Math.round(v||0)));}
+function riskLabel(v){if(v<25)return "faible"; if(v<50)return "modéré"; if(v<75)return "élevé"; return "très élevé";}
+
+function analyze(){
+const profile=document.getElementById("profile").value.toLowerCase();
+const conversation=document.getElementById("conversation").value.toLowerCase();
+const text=profile+" "+conversation;
+const checked=[...document.querySelectorAll("#checks input:checked")];
+let score=0,minimumScore=0,labels=[],categoryScores={};
+
+checked.forEach(item=>{
+const points=Number(item.value),min=Number(item.dataset.min||0),cat=item.dataset.cat||"general";
+score+=points;
+categoryScores[cat]=(categoryScores[cat]||0)+points;
+if(min>minimumScore)minimumScore=min;
+labels.push(item.dataset.label);
+});
+
+riskyWords.forEach(item=>{
+if(text.includes(item[0])){
+score+=item[1];
+categoryScores[item[4]]=(categoryScores[item[4]]||0)+item[1];
+if(item[2]>minimumScore)minimumScore=item[2];
+labels.push(item[3]);
+}
+});
+
+if(conversation.length>700)score+=8;
+if(conversation.length>1400)score+=12;
+if(checked.length>=2)score+=10;
+if(checked.length>=4)score+=18;
+if(checked.length>=6)score+=28;
+if(checked.length>=8)score+=38;
+
+const strongCategories=Object.values(categoryScores).filter(v=>v>=45).length;
+if(strongCategories>=2)score+=12;
+if(strongCategories>=3)score+=18;
+if(strongCategories>=4)score+=25;
+
+score=Math.max(score,minimumScore);
+score=cap(score);
+labels=[...new Set(labels)];
+
+let dominantCategory="identity",highest=0;
+for(const cat in categoryScores){if(categoryScores[cat]>highest){highest=categoryScores[cat];dominantCategory=cat;}}
+
+const data=categoryData[dominantCategory]||categoryData.identity;
+let level="VIGILANCE";
+let summary="Il y a peu d'éléments, mais reste sur les faits. Ne donne rien, ne prouve rien, vérifie tranquillement.";
+let reading=data.reading;
+let actions=data.actions;
+let color="#ff0000";
+
+if(score>=15&&score<35){level="RISQUE RÉEL";summary="Il y a déjà des signaux à ne pas balayer. On ralentit. On vérifie. On ne s'attache pas plus vite que les faits.";color="#ff5a00";}
+if(score>=35&&score<55){level="DANGER IMPORTANT";summary="Plusieurs signaux sont incompatibles avec une relation claire. Ce n'est plus le moment de faire confiance les yeux fermés.";color="#ff1a1a";}
+if(score>=55&&score<75){level="RISQUE TRÈS ÉLEVÉ";summary="La situation présente des signaux forts de manipulation, d'emprise, de mensonge, d'arnaque affective, de tromperie, de double vie ou de relation cachée imposée.";color="#d60000";}
+if(score>=75){level="DANGER MAJEUR";summary="Les signaux observés sont incompatibles avec une relation saine. Le risque de manipulation, d'emprise, d'arnaque affective, de double vie, de tromperie ou de chantage est extrêmement élevé.";color="#8b0000";}
+
+const manipulationRisk=cap((categoryScores.control||0)+(categoryScores.guilt||0)+(categoryScores.narcissism||0)+(categoryScores.lovebombing||0));
+const cheatingRisk=cap((categoryScores.infidelity||0)+(categoryScores.doublelife||0)+(categoryScores.secret||0));
+const financialRisk=cap((categoryScores.money||0)+(categoryScores.documents||0));
+const abuseRisk=cap((categoryScores.abuse||0)+(categoryScores.danger||0)+(categoryScores.control||0));
+const identityRisk=cap((categoryScores.identity||0)+(categoryScores.identitypressure||0)+(categoryScores.lies||0));
+const addictionRisk=cap((categoryScores.addiction||0));
+
+let verdict="";
+if(score<15){verdict="Vigilance simple. Les éléments donnés sont insuffisants pour conclure à un danger fort, mais il faut rester sur les faits et ne rien donner de sensible.";}
+else if(score<35){verdict="Vigilance importante. Il y a déjà des signaux à surveiller. Ne va pas plus vite que les preuves réelles.";}
+else if(score<55){verdict="Risque élevé. Cette relation mérite une prise de recul claire. Tu ne dois pas minimiser les incohérences.";}
+else if(score<75){verdict="Risque très élevé. Une prise de distance est fortement recommandée. Ce n'est plus une impression, ce sont des signaux accumulés.";}
+else{verdict="Danger majeur. Les signaux observés sont incompatibles avec une relation saine. Protège-toi, garde les preuves et ne reste pas seule ou seul avec cette situation.";}
+
+if(labels.length===0&&text.trim().length<20){
+score=0;level="ANALYSE INCOMPLÈTE";summary="Il manque des éléments. Sans faits précis, on ne conclut pas.";
+reading="Pour analyser correctement, il faut du concret : ce que la personne dit, ce qu'elle refuse, ce qu'elle demande, ce qui revient souvent. Sans faits, on ne devine pas.";
+actions=["Ajoute des messages précis.","Note les demandes concrètes.","Coche uniquement ce qui est vraiment présent.","Relance l'analyse ensuite."];
+color="#ff0000";verdict="Analyse incomplète. Ajoute des faits précis avant de tirer une conclusion.";
+}
+
+document.getElementById("score").textContent=score+"%";
+document.getElementById("score").style.background=color;
+document.getElementById("level").textContent=level;
+document.getElementById("level").style.color=color;
+document.getElementById("summary").textContent=summary;
+document.getElementById("reading").textContent=reading;
+document.getElementById("badges").innerHTML=labels.length?labels.map(l=>`<span class="badge">${l}</span>`).join(""):"<span class='badge'>Aucun signal fort détecté</span>";
+document.getElementById("riskDetails").innerHTML=`
+<div class="riskCard">Manipulation <span>${manipulationRisk}%</span><small>${riskLabel(manipulationRisk)}</small></div>
+<div class="riskCard">Tromperie ou double vie <span>${cheatingRisk}%</span><small>${riskLabel(cheatingRisk)}</small></div>
+<div class="riskCard">Financier ou documents <span>${financialRisk}%</span><small>${riskLabel(financialRisk)}</small></div>
+<div class="riskCard">Emprise ou violence psy <span>${abuseRisk}%</span><small>${riskLabel(abuseRisk)}</small></div>
+<div class="riskCard">Identité ou mensonge <span>${identityRisk}%</span><small>${riskLabel(identityRisk)}</small></div>
+<div class="riskCard">Addiction ou instabilité <span>${addictionRisk}%</span><small>${riskLabel(addictionRisk)}</small></div>`;
+document.getElementById("verdict").textContent=verdict;
+document.getElementById("actions").innerHTML=actions.map(a=>`<li>${a}</li>`).join("");
+document.getElementById("result").style.display="block";
+document.getElementById("result").scrollIntoView({behavior:"smooth"});
+}
+
+
+function resetForm(){
+const profile=document.getElementById("profile");
+const conversation=document.getElementById("conversation");
+if(profile)profile.value="";
+if(conversation)conversation.value="";
+document.querySelectorAll("#checks input").forEach(cb=>{cb.checked=false;});
+const result=document.getElementById("result");
+if(result)result.style.display="none";
+const score=document.getElementById("score");
+if(score)score.textContent="0%";
+const level=document.getElementById("level");
+if(level)level.textContent="Analyse prête";
+const summary=document.getElementById("summary");
+if(summary)summary.textContent="Entre les éléments puis lance l'analyse.";
+const badges=document.getElementById("badges");
+if(badges)badges.innerHTML="";
+const riskDetails=document.getElementById("riskDetails");
+if(riskDetails)riskDetails.innerHTML="";
+const verdict=document.getElementById("verdict");
+if(verdict)verdict.textContent="Analyse en attente.";
+const reading=document.getElementById("reading");
+if(reading)reading.textContent="";
+const actions=document.getElementById("actions");
+if(actions)actions.innerHTML="";
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+document.addEventListener("contextmenu",e=>{e.preventDefault();alert("Clic droit désactivé.");});
+document.addEventListener("dragstart",e=>e.preventDefault());
+document.addEventListener("keydown",e=>{
+const key=e.key.toLowerCase();
+if(e.key==="F12"||(e.ctrlKey&&key==="u")||(e.ctrlKey&&key==="s")||(e.ctrlKey&&key==="c")||(e.ctrlKey&&key==="x")||(e.ctrlKey&&e.shiftKey&&key==="i")||(e.ctrlKey&&e.shiftKey&&key==="j")){
+e.preventDefault();alert("Action désactivée.");return false;
+}
+});
+</script>
 </body>
 </html>
